@@ -1,40 +1,49 @@
-# SystemHelper 操作指南
+[English](./README.md) | [简体中文](./README.zh-CN.md)
 
-用 ADB 查清 Android 手机上的 SystemHelper 是哪个应用，再决定是否禁用、为主用户卸载或恢复。教程从连接手机讲起，适合第一次使用 ADB 的读者。每条命令都由你在电脑上确认执行，网页不会操作手机。
+# SystemHelper Guide
 
-**[打开中文操作指南](https://happy-games.github.io/systemhelper-guide/)**
+An ADB guide for identifying SystemHelper on Android, checking its install state, and deciding whether to disable it, remove it for User 0, or restore it. It starts with the USB connection. You run each command yourself.
 
-> **先核对包名。** 本教程处理的是 `com.mobiletools.systemhelper`。名字相近的高通组件 `com.qualcomm.qti.services.systemhelper` 请保留。
+**[Open the online guide](https://happy-games.github.io/SystemHelper-Guide/)**
 
-## 教程内容
+> **Check the full package name.** This guide covers `com.mobiletools.systemhelper`. Leave `com.qualcomm.qti.services.systemhelper`, a separate Qualcomm system component, alone.
 
-打开网页后，按目录查看连接手机、识别包名、标准 ADB 操作、重启验证和恢复。网页提供深浅主题和可复制命令。通用流程以 Windows 为主，其他 Android 手机也可以参考识别和状态检查。
+## Why some users remove SystemHelper
 
-## 小米 17 Pro Max 实测摘要
+Public analyses link the preinstalled component on some mainland China Android phones to China Unicom device management. November 2026 reports on specific samples identified fields such as IMEI, IMSI, ICCID, app lists, usage time, data usage, and network or location information. The reports identified logic for sending data to `dm.wo.com.cn:18080`. One report also analyzed network traffic from its test phone.
 
-| 项目 | 记录 |
+App lists and usage records can reveal more when tied to device or SIM identifiers. Some owners disable or remove the package for their user to limit further collection by this component. The reports do not establish that it is malware, that every phone behaves the same way, or that every field reaches the server. Removing it cannot undo past transfers or establish what other services collect.
+
+## Supported devices and test record
+
+The read-only ADB checks can be used on other Android phones with USB debugging. Standard disable and uninstall commands depend on the manufacturer and system build. The advanced result below applies only to the recorded phone and build.
+
+| Item | Recorded result |
 | --- | --- |
-| 设备 | Xiaomi 17 Pro Max，16 GB RAM / 1 TB |
-| 系统 | HyperOS `OS4.0.6.0.XPBCNXM` |
-| 目标应用版本 | `4.0.0-20260910` |
-| 标准 ADB 流程 | 禁用和用户级卸载均被系统拒绝 |
-| 高级方案 | 使用上游临时工具调用内部包管理接口，重启后 User 0 仍为 `installed=false` |
+| Device | Xiaomi 17 Pro Max, 16 GB RAM / 1 TB |
+| System | HyperOS `OS4.0.6.0.XPBCNXM` |
+| Target | `com.mobiletools.systemhelper`, version `4.0.0-20260910` |
+| Root and bootloader | Root access not used. Bootloader not unlocked. |
+| Standard commands | Disable and user-level uninstall were both refused. |
+| Advanced method | The upstream tool called the internal package manager interface as ADB shell. User 0 still showed `installed=false` after reboot. |
+| Basic checks | Mobile data, calls, and SMS worked. |
 
-这里的 `installed=false` 表示主用户的安装登记已取消。系统分区中的原始 APK 仍在。高级方案的成功记录限于上表的设备和构建，网页自带的独立 Java 示例仅通过电脑端编译检查。
+The test used the upstream tool. The website’s separate Java example passed desktop compilation only.
 
-操作前请备份重要资料。其他设备若被系统拒绝，先回读安装状态。系统更新后可以再查一次，恢复是否可用也取决于设备。
+## Risks and recovery
 
-## 仓库文件
+Removal is optional. This component may support carrier registration or device management. Back up important data and record the original package state before changing it. User-level removal changes the install state for User 0 and leaves the original system APK in place. If that APK is still available, the guide shows how to try recovery with `install-existing` and verify the result. Recovery depends on the build and was not tested in the recorded case.
 
-| 文件 | 用途 |
-| --- | --- |
-| [`index.html`](./index.html) | GitHub Pages 教程首页，样式和脚本内联 |
-| [`README.md`](./README.md) | 当前仓库首页说明 |
-| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | 机型记录、问题反馈和脱敏要求 |
-| [`LICENSE`](./LICENSE) | 本项目的 MIT 许可 |
+## How to use the guide
 
-## 来源与许可
+Open the online guide above. Start with the read-only checks and follow the sections for standard ADB, verification, and recovery. Choose **简体中文** in the header to read the Chinese version. The guide keeps the commands and test output identical in both languages.
 
-高级方案的原始思路、工具和公开验证记录来自 [zd-Ethan/systemhelper](https://github.com/zd-Ethan/systemhelper)。ADB 命令的用法见 [Android 官方文档](https://developer.android.com/tools/adb)。
+## Sources and license
 
-教程编排、页面及独立编写的示例由 HAPPY Games 整理，采用 [MIT 许可](./LICENSE)。上游源码和第三方工具各自遵循其发布条款。
+- [zd-Ethan — upstream user-level removal procedure and test record](https://github.com/zd-Ethan/systemhelper)
+- [acxun — primary HyperOS device-management analysis](https://github.com/acxun/hyperos-dm-report)
+- [DreamingCats — primary analysis of a realme sample](https://github.com/DreamingCats/com.mobiletools.systemhelper_analysis)
+- [Bufanche — coverage of SystemHelper reporting](https://bufanche.com/guides/unicom-systemhelper/)
+- [Android Debug Bridge documentation](https://developer.android.com/tools/adb)
+
+HAPPY Games publishes the guide and its independent example under the [MIT License](./LICENSE). Upstream code and third-party tools follow their own terms. See the [contribution guide](./CONTRIBUTING.md) for reporting another device.

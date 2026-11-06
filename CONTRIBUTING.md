@@ -1,22 +1,15 @@
-# 参与完善教程
+[English](./CONTRIBUTING.md) | [简体中文](./CONTRIBUTING.zh-CN.md)
 
-感谢愿意帮助非技术用户理解 Android 系统应用处理流程的贡献者。
+# Contributing to the guide
 
-## 我们欢迎
+We welcome reproducible device reports, corrections to command output or instructions, and accessibility or mobile layout fixes. If you change the guide text, update both languages. Keep commands, package names, and recorded output identical. Identify which results you observed yourself, which come from published sources, and which still need testing.
 
-- 不同机型和系统版本的 **可重复验证** 的操作记录。
-- 更准确、可复现的报错说明与新手提示。
-- 文案纠错、移动端无障碍修复、不同电脑系统下的命令修订。
-- 明确区分“自己的实测”“转述他人的实测”“尚未验证的推测”。
+## Reporting a device result
 
-## 提交机型记录时
+Include the phone model, complete system build, target package, app version, commands you ran, and relevant output. If you checked the phone after rebooting, say whether User 0 still showed `installed=false` and which basic communication features you actually tested.
 
-请至少写明手机型号、系统完整构建版本、目标包名、应用版本、采用的命令、命令返回值、重启后是否仍为 `installed=false`，以及通信基本功能是否受到影响。不存在的结果不要填为“正常”。
+Remove ADB serial numbers, IMEI, IMSI, ICCID, phone numbers, names, local account names, location, and credentials before sharing logs or screenshots. Avoid unverified one-click removal tools, scripts that delete system files or escalate privileges, and APKs from unknown sources.
 
-请先脱敏：ADB 设备序列号、IMEI/IMSI/ICCID、手机号、真实姓名、电脑用户名、定位、日志中的身份标识与密钥。
+## License
 
-不要推荐未经验证的一键“万能卸载”、`rm -rf /system/...`、Root 提权脚本或不明来源 APK。
-
-## 关于许可
-
-如要向本仓库提交第三方代码、截图或文档，请确认你有权按照仓库的 MIT License 分发；否则改用来源链接并说明作者、版本和许可状态。
+Submit third-party material only if you have permission to distribute it under this repository’s [MIT License](./LICENSE). Otherwise, link to the source and identify the author, version, and license if available.

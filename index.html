@@ -1,54 +1,321 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="light">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="SystemHelper 小白操作指南：从打开 USB 调试、连接 ADB、识别包名到用户级卸载、验证和恢复。包含小米 17 Pro Max 实测。">
-<meta name="color-scheme" content="light dark">
-<title>SystemHelper 操作指南 · 一步一步来</title>
-<style>
-:root{--page:#f8f8f5;--paper:#fff;--paper2:#f4f4f0;--ink:#252a28;--muted:#68716c;--line:#e1e4df;--accent:#255d4b;--accent-low:#eaf2ed;--danger:#a34735;--danger-low:#faf0eb;--code:#202723;--codeText:#e5ede8;--shadow:0 1px 3px #16201b0b;--font:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--mono:"Cascadia Code","Consolas","SFMono-Regular",monospace}
-html[data-theme="dark"]{--page:#171b19;--paper:#202522;--paper2:#272d29;--ink:#eeefe9;--muted:#a8b2a9;--line:#38403a;--accent:#8ab5a0;--accent-low:#273d32;--danger:#e3a48e;--danger-low:#382a26;--code:#0e1511;--codeText:#dfebe1}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:94px}body{margin:0;background:var(--page);color:var(--ink);font:15px/1.8 var(--font);-webkit-font-smoothing:antialiased}a{color:var(--accent);text-underline-offset:3px}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}::selection{background:var(--accent-low)}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-.wrap{max-width:1180px;margin:auto;padding:0 36px}.masthead{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--line)}.masthead-inner{height:66px;display:flex;align-items:center;gap:24px}.identity{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;white-space:nowrap}.identity:hover{text-decoration:none}.logo{display:grid;place-items:center;width:32px;height:32px;color:#fff;background:#254f3f;border-radius:5px;font-size:17px;font-weight:800;font-family:var(--mono)}.identity span{font-size:14px;font-weight:760;letter-spacing:-.3px}.identity em{font-style:normal;color:var(--muted);font-size:12px;font-weight:400}.toplinks{display:flex;gap:23px;margin-left:auto}.toplinks a{font-size:12px;color:var(--muted);text-decoration:none}.toplinks a:hover{color:var(--ink)}.headbtn{border:1px solid var(--line);background:transparent;color:var(--ink);padding:6px 11px;font-size:12px;border-radius:6px;white-space:nowrap}.headbtn:hover{background:var(--paper2)}
-.banner{background:#254f3f;color:#e2eee6;font-size:12px}.banner .wrap{padding-top:8px;padding-bottom:8px}.banner a{color:#fff}.hero{padding:78px 0 68px;border-bottom:1px solid var(--line)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 345px;gap:65px;align-items:end}.overline{font-size:12px;letter-spacing:1px;color:var(--accent);font-weight:750}.hero h1{font-size:clamp(39px,5vw,64px);line-height:1.17;letter-spacing:-2px;max-width:730px;margin:20px 0 23px;font-weight:760}.hero h1 .thin{font-weight:450;color:var(--muted)}.lead{color:var(--muted);font-size:16px;max-width:670px;line-height:1.95}.hero-cta{display:flex;gap:10px;margin-top:31px;flex-wrap:wrap}.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);border-radius:6px;padding:10px 16px;background:var(--paper);color:var(--ink);font-weight:650;font-size:13px}.btn:hover{background:var(--paper2);text-decoration:none}.btn.primary{color:#fff;background:#254f3f;border-color:#254f3f}.btn.primary:hover{background:#1a3c30}.meta{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--muted);font-size:12px}.field-note{border-top:2px solid var(--accent);background:var(--paper);padding:24px 26px 23px;box-shadow:var(--shadow)}.field-note .notelabel{font-size:11px;letter-spacing:.9px;font-weight:800;color:var(--accent)}.field-note p{font-size:14px;line-height:1.85;margin:14px 0 17px}.field-note small{font-size:12px;color:var(--muted)}.trace{border-left:2px solid var(--line);margin-top:19px;padding-left:15px;font:12px/2 var(--mono);color:var(--muted)}.trace .ok{color:var(--accent);font-weight:800}
-.bodylayout{display:grid;grid-template-columns:205px minmax(0,1fr);gap:66px;align-items:start;padding-top:53px;padding-bottom:75px}.side{position:sticky;top:98px}.sidetitle{font-weight:750;font-size:12px;letter-spacing:.5px;color:var(--muted);margin:0 0 16px}.sidenav{display:flex;flex-direction:column;border-left:1px solid var(--line)}.sidenav a{border-left:2px solid transparent;margin-left:-1px;padding:8px 0 8px 15px;color:var(--muted);text-decoration:none;font-size:13px;line-height:1.55}.sidenav a:hover{color:var(--ink)}.sidenav a.active{border-color:var(--accent);color:var(--ink);font-weight:650}.progress{margin-top:32px;border-top:1px solid var(--line);padding-top:19px}.progress p{font-size:12px;color:var(--muted);margin:0 0 8px}.progressbar{height:4px;background:var(--line)}.progressbar>span{display:block;width:0;height:100%;background:var(--accent);transition:width .2s}.progress button{background:none;border:none;padding:9px 0;font-size:11px;color:var(--muted);text-decoration:underline}
-.main{max-width:815px;min-width:0}.article-intro{padding-bottom:49px}.article-intro h2,.section h2{font-size:28px;letter-spacing:-.7px;line-height:1.4;margin:0 0 17px}.article-intro p{max-width:720px;color:var(--muted)}.separator{border:0;border-top:1px solid var(--line);margin:33px 0}.choose{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0 15px}.choose button{border:1px solid var(--line);background:var(--paper);color:var(--ink);text-align:left;padding:16px 18px;border-radius:6px;min-height:102px}.choose button.selected{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-low)}.choose strong{display:block;font-size:14px;margin-bottom:5px}.choose small{display:block;color:var(--muted);font-size:12px;line-height:1.6}.device-result{font-size:13px;color:var(--muted);padding:13px 16px;background:var(--paper2);border-left:2px solid var(--accent)}.important{background:var(--danger-low);border-left:3px solid var(--danger);padding:15px 18px;font-size:13px;color:var(--ink);margin:23px 0}.important strong{color:var(--danger)}
-.section{border-top:1px solid var(--line);padding:37px 0 42px;scroll-margin-top:80px}.steptop{display:flex;gap:18px;align-items:baseline}.stepnum{font:700 12px var(--mono);color:var(--accent);min-width:32px}.stepcontent{min-width:0;flex:1}.section h2{font-size:23px;margin:0 0 14px}.section p{margin:10px 0;color:var(--muted)}.section strong{color:var(--ink)}.section ul,.section ol{padding-left:23px;margin:10px 0 16px}.section li{margin:8px 0}.inline-code{padding:2px 5px;border:1px solid var(--line);background:var(--paper2);border-radius:3px;font:12px var(--mono);word-break:break-all;color:var(--ink)}.step-done{margin-top:20px;display:inline-flex;align-items:center;gap:9px;font-size:12px;color:var(--muted);cursor:pointer}.step-done input{accent-color:var(--accent);width:16px;height:16px}.step-done:has(input:checked){color:var(--accent)}.callout{border-left:2px solid var(--line);padding:12px 16px;margin:19px 0;background:var(--paper);font-size:13px;color:var(--muted)}.callout strong{display:block;font-size:12px;margin-bottom:2px;color:var(--ink)}.callout a{font-size:12px}
-.cmd{margin:19px 0 15px;border:1px solid #303a33;border-radius:7px;overflow:hidden;background:var(--code);color:var(--codeText)}.cmdbar{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 13px;border-bottom:1px solid #425047;font-size:11px;color:#b4c5b8}.cmdbar span{letter-spacing:.2px}.copy{color:#f2f8f2;border:1px solid #566358;border-radius:4px;background:transparent;padding:3px 9px;font:11px var(--font)}.copy:hover{background:#39483d}.copy:disabled{opacity:.35;cursor:not-allowed}.cmd pre{margin:0;padding:15px 16px 17px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;font:12.5px/1.8 var(--mono);tab-size:2}.sample{border-left:2px solid var(--accent);background:var(--paper2);padding:11px 15px;margin:13px 0 18px;font-size:12px;color:var(--muted)}.sample pre{margin:4px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 var(--mono);color:var(--ink)}.tinyhead{display:block;font-weight:760;color:var(--ink);font-size:14px;margin:25px 0 8px}.file-row{padding:16px 18px;border:1px solid var(--line);background:var(--paper);display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;justify-content:space-between;margin:17px 0}.file-row strong{display:block;font-size:13px}.file-row small{display:block;font-size:12px;color:var(--muted)}.file-actions{display:flex;flex-wrap:wrap;gap:8px}.action{background:var(--paper2);border:1px solid var(--line);color:var(--ink);padding:7px 11px;font-size:12px;border-radius:4px}.action:hover{background:var(--accent-low)}.source-details summary{font-size:12px;cursor:pointer;color:var(--accent)}.source-details pre{padding:15px;margin:9px 0;background:var(--code);color:var(--codeText);max-height:310px;overflow:auto;font:12px/1.7 var(--mono)}
-.decision{margin:19px 0;border:1px solid var(--line);background:var(--paper)}.decision .drow{display:flex;align-items:start;gap:16px;padding:15px 18px}.decision .drow+.drow{border-top:1px solid var(--line)}.decision b{color:var(--accent);font:700 13px var(--mono);min-width:83px}.decision span{color:var(--muted);font-size:13px;min-width:0;overflow-wrap:anywhere}.decision strong{font-weight:750}.tabrow{display:flex;gap:5px;margin:18px 0 8px}.tabrow button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:4px;padding:5px 12px;font-size:12px}.tabrow button.active{background:var(--ink);color:var(--page);border-color:var(--ink)}.platform-panel{display:none}.platform-panel.active{display:block}.advanced{border:1px solid var(--line);background:var(--paper);padding:20px;margin:21px 0}.advanced h3{font-size:16px;margin:0 0 8px}.advanced p{font-size:13px}.unlock{display:flex;align-items:flex-start;gap:10px;margin-top:15px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;line-height:1.7}.unlock input{margin-top:5px;accent-color:var(--accent)}.advanced-commands{opacity:.5;pointer-events:none;transition:opacity .15s}.advanced-commands.enabled{opacity:1;pointer-events:auto}.advanced-commands .copy{pointer-events:none}.advanced-commands.enabled .copy{pointer-events:auto}.only-xiaomi{display:none}.only-xiaomi.visible{display:block}.generic-help{display:block}.generic-help.hidden{display:none}
-.faq{margin-top:20px}.faq details{border-top:1px solid var(--line);padding:14px 0}.faq details:last-child{border-bottom:1px solid var(--line)}.faq summary{cursor:pointer;font-weight:660;font-size:14px;list-style-position:outside}.faq details p{font-size:13px;margin:10px 0 0}.sourcebox{margin-top:46px;border-top:1px solid var(--line);padding-top:22px}.sourcebox h2{font-size:18px;margin:0 0 10px}.sourcebox p{font-size:12px;color:var(--muted)}.sourcebox ul{padding-left:20px;font-size:12px;line-height:2}.footer{border-top:1px solid var(--line);padding:30px 0 44px;color:var(--muted);font-size:12px}.footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}.footer a{color:var(--muted)}.toast{position:fixed;right:20px;bottom:20px;background:var(--ink);color:var(--page);font-size:12px;padding:9px 13px;border-radius:5px;opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;z-index:60}.toast.show{opacity:1;transform:translateY(0)}.mobileNav{display:none}
-@media(max-width:950px){.hero-inner{grid-template-columns:1fr;gap:30px}.field-note{max-width:680px}.bodylayout{grid-template-columns:170px minmax(0,1fr);gap:30px}.toplinks{display:none}}
-@media(max-width:700px){.wrap{padding:0 20px}.masthead-inner{height:59px}.identity em{display:none}.hero{padding:49px 0 43px}.hero h1{font-size:41px;letter-spacing:-1.3px}.lead{font-size:14px}.field-note{padding:20px}.bodylayout{display:block;padding-top:30px}.side{display:none}.mobileNav{display:block;margin:0 0 30px}.mobileNav select{width:100%;padding:12px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:5px}.choose{grid-template-columns:1fr}.section{padding:30px 0}.section h2{font-size:20px}.article-intro h2{font-size:24px}.steptop{gap:10px}.stepnum{min-width:26px}.cmd pre{font-size:11px}.file-row{align-items:flex-start}.footer-inner{display:block}}
-@media print{.masthead,.banner,.side,.mobileNav,.hero-cta,.step-done,.copy,.headbtn,.action,.toast,.unlock{display:none!important}body{background:#fff;color:#000}.wrap{max-width:none}.hero{padding:20px 0}.hero-inner,.bodylayout{display:block}.main{max-width:none}.section{break-inside:avoid}.cmd{break-inside:avoid}.cmdbar{color:#ccc}.only-xiaomi{display:block!important}.advanced-commands{opacity:1!important}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Identify SystemHelper on Android with ADB. Check, disable, remove for User 0, verify after a reboot, and restore when supported.">
+  <link rel="canonical" href="https://happy-games.github.io/SystemHelper-Guide/">
+  <title>SystemHelper Guide</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --background: light-dark(#fff, #10151c);
+      --surface: light-dark(#f5f7fa, #181f29);
+      --text: light-dark(#202832, #e6edf5);
+      --muted: light-dark(#505d6d, #aab6c6);
+      --border: light-dark(#d9e0e8, #333e4d);
+      --blue: light-dark(#1459a7, #91c4ff);
+      --note: light-dark(#eff6ff, #17283d);
+      --mono: Consolas, "SFMono-Regular", "Liberation Mono", monospace;
+      accent-color: var(--blue);
+    }
+    :root[data-theme="light"] { color-scheme: light; }
+    :root[data-theme="dark"] { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 1rem; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font: 1rem/1.75 system-ui, "Microsoft YaHei", sans-serif;
+      overflow-wrap: anywhere;
+    }
+    a { color: var(--blue); text-underline-offset: .18em; }
+    a:hover { text-decoration-thickness: .13em; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+    [hidden] { display: none !important; }
+    .wrap { max-width: 72rem; margin-inline: auto; padding-inline: clamp(1rem, 4vw, 2.5rem); }
+    .skip { position: absolute; inset: .5rem auto auto 1rem; z-index: 1; padding: .5rem; background: var(--background); }
+    .skip:not(:focus) { clip-path: inset(50%); }
+    header { border-bottom: 1px solid var(--border); }
+    .header-row { min-height: 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem 1rem; padding-block: .5rem; }
+    .site-name { font-weight: 650; color: var(--text); text-decoration: none; }
+    button {
+      padding: .28rem .65rem;
+      min-height: 2rem;
+      border: 1px solid var(--border);
+      border-radius: .35rem;
+      background: var(--background);
+      color: var(--text);
+      font: inherit;
+      cursor: pointer;
+    }
+    button:hover { background: var(--surface); }
+    button:disabled { cursor: wait; }
+    .layout { display: grid; grid-template-columns: 12rem minmax(0, 48rem); gap: clamp(1.75rem, 5vw, 4rem); padding-block: 2.5rem 4rem; align-items: start; }
+    .toc { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow: auto; padding: .25rem 0 .5rem .9rem; border-left: 1px solid var(--border); }
+    .toc p { margin: 0 0 .4rem; font-weight: 650; }
+    .toc ol { list-style: none; margin: 0; padding: 0; }
+    .toc a { display: block; padding: .28rem .15rem; color: var(--muted); text-decoration: none; font-size: .9rem; }
+    .toc a:hover, .toc a[aria-current="location"] { color: var(--blue); text-decoration: underline; }
+    main, article { min-width: 0; }
+    h1, h2, h3 { line-height: 1.35; }
+    h1 { font-size: clamp(1.9rem, 4.5vw, 2.65rem); margin: 0 0 .8rem; }
+    h2 { font-size: clamp(1.35rem, 3.5vw, 1.65rem); margin: 0 0 .85rem; }
+    h3 { font-size: 1.08rem; margin: 1.65rem 0 .5rem; }
+    p, ul, ol, dl { margin-block: .7rem 1rem; }
+    ul, ol { padding-inline-start: 1.45rem; }
+    li + li { margin-top: .35rem; }
+    section + section { margin-top: 2.4rem; padding-top: 1.9rem; border-top: 1px solid var(--border); }
+    .intro { color: var(--muted); font-size: 1.07rem; }
+    .note { background: var(--note); border-left: .2rem solid var(--blue); padding: .75rem 1rem; }
+    code, samp { font-family: var(--mono); font-size: .9em; }
+    :not(pre) > code, samp { background: var(--surface); border-radius: .2rem; padding: .08em .25em; }
+    figure { margin: .85rem 0; border: 1px solid var(--border); border-radius: .45rem; background: var(--surface); }
+    figcaption { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .35rem .75rem; border-bottom: 1px solid var(--border); color: var(--muted); padding: .35rem .75rem; font-size: .86rem; }
+    pre { margin: 0; padding: .65rem .75rem; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; font-family: var(--mono); tab-size: 4; }
+    .result { margin-block: .5rem 1rem; padding-inline-start: .8rem; border-left: 1px solid var(--border); }
+    .result > div + div { margin-top: .3rem; }
+    .result dt, .result dd { display: inline; margin: 0; }
+    .result dt { font-weight: 650; margin-inline-end: .5rem; }
+    details { border-bottom: 1px solid var(--border); padding: .55rem 0; }
+    summary { min-height: 2rem; cursor: pointer; font-weight: 600; }
+    details p { margin: .3rem 0 .6rem; }
+    footer { border-top: 1px solid var(--border); padding-block: 1rem; color: var(--muted); font-size: .9rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .clipboard-buffer { position: fixed; top: 0; left: 0; opacity: 0; pointer-events: none; }
+    @media (max-width: 48rem) {
+      .layout { display: block; padding-top: 1.25rem; }
+      .toc { position: static; max-height: none; border: 0; border-bottom: 1px solid var(--border); padding: 0 0 .85rem; margin-bottom: 1.4rem; }
+      .toc ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: 0 .65rem; }
+      .toc li { margin: 0; }
+      .toc a, button { min-height: 2.5rem; }
+      .toc a { display: flex; align-items: center; }
+    }
+    /* Language controls */
+    html { scroll-padding-top: 5.5rem; }
+    header { position: sticky; top: 0; z-index: 2; background: var(--background); }
+    .skip { z-index: 3; }
+    .toc { top: 5rem; max-height: calc(100vh - 6rem); }
+    .header-actions, #language, .footer-row {
+      display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .75rem;
+    }
+    #language { gap: 0; border: 1px solid var(--border); border-radius: .35rem; overflow: hidden; }
+    #language button { border: 0; border-radius: 0; }
+    #language button + button { border-left: 1px solid var(--border); }
+    #language button[aria-pressed="true"] { color: var(--blue); background: var(--note); font-weight: 650; }
+    #language button:focus-visible { outline-offset: -3px; }
+    #theme-toggle, .command button { min-width: 8rem; }
+    .command figcaption { min-height: 2.9rem; }
+    button:disabled { cursor: not-allowed; color: var(--muted); }
+    .checkpoint { display: flex; align-items: baseline; gap: .5rem; margin-block: 1rem; }
+    .checkpoint input { flex: none; }
+    #progress { border-top: 1px solid var(--border); margin-top: .7rem; padding-top: .65rem; font-size: .9rem; }
+    #progress p { margin: 0 0 .4rem; }
+    #platform { border: 1px solid var(--border); margin-block: 1rem; }
+    #platform label { display: inline-block; margin-inline-end: .85rem; }
+    table { width: 100%; border-collapse: collapse; margin-block: 1rem; }
+    th, td { border-bottom: 1px solid var(--border); text-align: start; padding: .45rem .55rem; vertical-align: top; }
+    thead { background: var(--surface); }
+    tbody th { font-weight: 600; }
+    .source-code { max-height: 22rem; overflow: auto; background: var(--surface); }
+    #copy-source { margin-block: .4rem; }
+    #toc-toggle { display: none; }
+    @media (max-width: 48rem) {
+      html { scroll-padding-top: 8rem; }
+      .header-actions { gap: .35rem; }
+      .command figcaption { min-height: 3.2rem; }
+      .toc { max-height: none; }
+      #toc-toggle { display: block; }
+      #toc-toggle:not([hidden]) + .toc-heading,
+      #toc-toggle:not([hidden])[aria-expanded="false"] ~ #toc-body { display: none; }
+      #toc-body { margin-top: .55rem; }
+    }
+    @media (max-width: 32rem) {
+      .header-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+  <script>
+    try {
+      const theme = localStorage.getItem("sht2-theme");
+      if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+    } catch {}
+  </script>
 </head>
-<body>
-<header class="masthead"><div class="wrap masthead-inner"><a href="#top" class="identity"><span class="logo" aria-hidden="true">S.</span><span>SystemHelper <em>/ 操作指南</em></span></a><nav class="toplinks"><a href="#before">开始前</a><a href="#steps">逐步操作</a><a href="#case">真实案例</a><a href="#questions">常见问题</a><a href="#sources">资料来源</a></nav><button type="button" class="headbtn" id="themeBtn" aria-label="切换明暗主题">深色模式</button></div></header>
-<div class="banner"><div class="wrap">这是操作说明，不是自动卸载程序。网页不会读取你的手机，也不会自动执行命令。</div></div>
-<main id="top">
-<section class="hero"><div class="wrap hero-inner"><div><div class="overline">ANDROID / BEGINNER'S FIELD GUIDE</div><h1>SystemHelper，<br><span class="thin">一步一步处理。</span></h1><p class="lead">从“电脑显示 <code>unauthorized</code> 怎么办”，到确认卸载是否真的生效。把一次真实操作整理成普通人也能看懂的教程，不需要会写代码。</p><div class="hero-cta"><a class="btn primary" href="#before">从第一步开始 <span aria-hidden="true">↗</span></a><a class="btn" href="#case">先看实测记录</a></div><div class="meta"><span>优先支持 Windows 10 / 11</span><span>支持离线阅读</span><span>无需 Root 的已验证案例</span></div></div><aside class="field-note"><div class="notelabel">来自真实设备的记录</div><p>小米 17 Pro Max，16GB + 1TB。在澎湃 OS 4.0.6.0 上，常规卸载被拒绝；随后通过用户级内部接口完成操作，并在重启后再次确认。</p><small>这不是“所有手机通用的一键卸载”。不同系统可能有不同结果。</small><div class="trace"><div>普通卸载　<span>→ 权限拒绝</span></div><div>用户级卸载　<span class="ok">→ installed=false</span></div><div>重启复查　<span class="ok">→ installed=false</span></div></div></aside></div></section>
-<div class="wrap bodylayout" id="steps"><aside class="side"><p class="sidetitle">本页目录</p><nav class="sidenav"><a href="#before">使用前先读</a><a href="#step1">01 · 准备工作</a><a href="#step2">02 · 打开 USB 调试</a><a href="#step3">03 · 连接电脑</a><a href="#step4">04 · 确认应用</a><a href="#step5">05 · 标准卸载</a><a href="#step6">06 · 特定机型方案</a><a href="#step7">07 · 验证与收尾</a><a href="#step8">08 · 恢复应用</a><a href="#case">真实案例</a><a href="#questions">常见问题</a></nav><div class="progress"><p>阅读/操作进度 <strong id="progressText">0 / 8</strong></p><div class="progressbar"><span id="progressFill"></span></div><button type="button" id="resetProgress">清空本机勾选</button></div></aside>
-<div class="main"><div class="mobileNav"><label class="sr" for="jumpTo">跳转到步骤</label><select id="jumpTo"><option value="">跳转到某一步…</option><option value="#before">使用前先读</option><option value="#step1">01 准备工作</option><option value="#step2">02 USB 调试</option><option value="#step3">03 连接电脑</option><option value="#step4">04 确认应用</option><option value="#step5">05 标准卸载</option><option value="#step6">06 特定机型方案</option><option value="#step7">07 验证与收尾</option><option value="#step8">08 恢复应用</option><option value="#case">实测记录</option><option value="#questions">常见问题</option></select></div>
-<section class="article-intro" id="before"><h2>先确认：你的手机属于哪种情况？</h2><p>不需要先学什么是 ADB。选好设备情况，然后跟着下面的编号做。前几步都是检查命令；真正会改变应用状态的命令会单独标出来。</p><div class="choose" role="group" aria-label="选择设备适配方案"><button type="button" class="selected" data-device="xiaomi"><strong>小米 17 Pro Max</strong><small>澎湃 OS 4.0.6.0.XPBCNXM<br>本教程有真实操作记录</small></button><button type="button" data-device="other"><strong>其他 Android 手机</strong><small>先做通用检查和标准 ADB 操作<br>不套用高级内部接口</small></button></div><div class="device-result" id="deviceResult" role="status">当前路线：小米 17 Pro Max 实测版。高级步骤仅在系统构建版本完全一致时才可考虑。</div><div class="important"><strong>先讲清楚</strong>SystemHelper 不等于病毒。是否需要处理取决于机型、组件用途与个人需求；卸载系统应用可能影响部分功能。本文只讨论包名 <span class="inline-code">com.mobiletools.systemhelper</span>，不要误操作名称相似的高通组件。</div><p>本文所有按钮只负责<strong>复制文字</strong>或<strong>下载源码文件</strong>，不会远程操作你的手机；网页中的“已完成”勾选仅保存在当前浏览器。</p></section>
-<section class="section" id="step1"><div class="steptop"><span class="stepnum">01</span><div class="stepcontent"><h2>准备你需要的东西</h2><p>一台 Android 手机、一条能传数据的 USB 线，以及 Windows 电脑。大部分手机只需要 Google 官方的 Platform-Tools。</p><ol><li>打开 <a href="https://developer.android.com/tools/releases/platform-tools" target="_blank" rel="noopener noreferrer">Google 官方 Platform-Tools 下载页</a>。</li><li>下载 Windows ZIP，解压后打开内层 <span class="inline-code">platform-tools</span> 文件夹。</li><li>确认里面能看到 <span class="inline-code">adb.exe</span>。不要在压缩包预览里直接运行。</li><li>点击资源管理器顶部<strong>地址栏</strong>，输入 <span class="inline-code">cmd</span>，按回车。黑色命令窗口会直接打开在这个文件夹里。</li></ol><div class="callout"><strong>为什么有些人输入 adb 提示找不到？</strong>通常是 CMD 打开在上一层文件夹。你需要进入真正包含 <span class="inline-code">adb.exe</span> 的 <span class="inline-code">platform-tools</span> 目录。</div><label class="step-done"><input type="checkbox" data-done="1">这一步完成了</label></div></div></section>
-<section class="section" id="step2"><div class="steptop"><span class="stepnum">02</span><div class="stepcontent"><h2>打开手机的 USB 调试</h2><p>以小米澎湃 OS 为例：</p><ol><li>手机进入<strong>设置 → 我的设备 → 全部参数与信息</strong>，连续点击“OS 版本”约 7 次，开启开发者模式。</li><li>返回<strong>设置 → 更多设置 → 开发者选项</strong>，开启“USB 调试”。</li><li>用 USB 数据线连接电脑，手机出现<strong>“允许 USB 调试”</strong>时，确认是你的电脑后选择允许。</li></ol><p>其他品牌的菜单不一定一样，可在手机设置里搜索“开发者选项”或“USB 调试”。</p><div class="callout"><strong>不需要做的事</strong>无需 Root、无需解锁 Bootloader；也不需要打开“USB 调试（安全设置）”或授予额外的高风险权限，除非手机系统另有明确要求且你理解其影响。</div><label class="step-done"><input type="checkbox" data-done="2">这一步完成了</label></div></div></section>
-<section class="section" id="step3"><div class="steptop"><span class="stepnum">03</span><div class="stepcontent"><h2>确认电脑真的连上了手机</h2><p>在刚才的 CMD 窗口粘贴这条命令，然后按回车：</p><div class="cmd" data-cmd="devices"></div><div class="sample"><b>正常应该看到</b><pre>List of devices attached
-XXXXXXXX    device</pre></div><div class="decision"><div class="drow"><b>device</b><span>已连接，可以继续。</span></div><div class="drow"><b>unauthorized</b><span>看看手机屏幕，点击“允许 USB 调试”，然后重试。</span></div><div class="drow"><b>没有设备</b><span>更换支持传输数据的线、接口，检查手机授权和 USB 驱动。</span></div><div class="drow"><b>adb 找不到</b><span>返回第 01 步，确认 CMD 处在 <span class="inline-code">adb.exe</span> 同目录。</span></div></div><div class="callout">不要把包含真实设备序列号的 CMD 截图直接公开到 GitHub Issues。需要提问时，先遮盖相关标识。</div><label class="step-done"><input type="checkbox" data-done="3">电脑已经显示 device</label></div></div></section>
-<section class="section" id="step4"><div class="steptop"><span class="stepnum">04</span><div class="stepcontent"><h2>先认准包名，绝对不要凭图标删除</h2><p>这一步不会卸载任何内容。先查询手机上是否有相关包：</p><div class="tabrow" role="tablist" aria-label="命令行系统"><button type="button" class="active" data-platform="win">Windows CMD</button><button type="button" data-platform="unix">macOS / Linux</button></div><div class="cmd" data-cmd="find"></div><p>这两个名称很像，但不是同一个东西：</p><div class="decision"><div class="drow"><b>目标</b><span><strong>com.mobiletools.systemhelper</strong><br>本文的唯一卸载目标。</span></div><div class="drow"><b>不要碰</b><span><strong>com.qualcomm.qti.services.systemhelper</strong><br>这是另一个高通系统组件，本教程不处理它。</span></div></div><span class="tinyhead">再核对三个信息</span><div class="cmd" data-cmd="who"></div><div class="cmd" data-cmd="build"></div><div class="cmd" data-cmd="status"></div><p>本教程的高级方案要求主用户是 <span class="inline-code">0</span>，且构建版本与实测一致。如果已经显示 <span class="inline-code">installed=false</span>，无需再次卸载。</p><label class="step-done"><input type="checkbox" data-done="4">已核对包名和系统版本</label></div></div></section>
-<section class="section" id="step5"><div class="steptop"><span class="stepnum">05</span><div class="stepcontent"><h2>先试标准方法</h2><p>如果你的目标包确实存在、仍安装在主用户，且你理解风险，可先尝试普通 ADB 用户级卸载。<strong>下面这条会修改手机应用安装状态。</strong></p><div class="cmd" data-cmd="uninstall"></div><div class="decision"><div class="drow"><b>Success</b><span>标准方式成功了，<strong>直接跳到第 07 步</strong>做验证。不需要任何 Java 工具。</span></div><div class="drow"><b>only root…</b><span>系统拒绝普通卸载。不要反复执行；只有符合实测条件的小米 17 Pro Max 才考虑下面的特殊方案。</span></div><div class="drow"><b>其他报错</b><span>先暂停。检查包名、设备连接、用户编号和系统限制，不建议照抄网上的“万能强删命令”。</span></div></div><p>这里的 <span class="inline-code">--user 0</span> 表示只针对主用户，<span class="inline-code">-k</span> 表示请求保留数据；原始系统 APK 通常仍留在系统分区。</p><label class="step-done"><input type="checkbox" data-done="5">已尝试标准方法并记录结果</label></div></div></section>
-<section class="section" id="step6"><div class="steptop"><span class="stepnum">06</span><div class="stepcontent"><h2>普通卸载被拒绝，怎么办？</h2><div class="generic-help hidden" id="otherAdvice"><p>如果你使用的是其他 Android 手机，<strong>请在这里停止高级操作</strong>。不同厂商的系统服务、权限检查和内部接口可能完全不同。你可以保留第 04 步的包名和版本信息，到原项目 Issue 或你设备的开发者社区核对兼容性。</p><p><a href="https://github.com/zd-Ethan/systemhelper/issues" target="_blank" rel="noopener noreferrer">到原项目查看问题反馈</a></p></div><div class="only-xiaomi visible" id="xiaomiAdvanced"><p>你看到的 <span class="inline-code">only root can delete system app for a particular user</span>，和这次小米 17 Pro Max 实测一致。原作者发现常规接口被拒绝后，通过一个临时 Java/DEX 小工具调用 Android 包管理内部接口完成了用户级卸载。<a href="https://github.com/zd-Ethan/systemhelper" target="_blank" rel="noopener noreferrer">查看原作者技术记录</a>。</p><div class="advanced"><h3>先确认这几项，再展示执行命令</h3><p>这不是所有小米手机通用的办法。下方示例工具特意<strong>固定目标包、User 0 和 OS 构建版本</strong>，避免误用于未知设备。</p><label class="unlock"><input type="checkbox" id="advancedAgree"><span>我确认自己的设备是<strong>小米 17 Pro Max</strong>，构建版本<strong>恰好为 OS4.0.6.0.XPBCNXM</strong>，当前主用户是 <strong>0</strong>，目标包为 <strong>com.mobiletools.systemhelper</strong>，并理解高级方法不是官方支持的功能。</span></label></div><div class="advanced-commands" id="advancedCommands"><span class="tinyhead">A · 准备 Java 环境</span><p>安装 JDK 17 或 21，确保下面两条有版本号（如果已装过，直接检查）。</p><div class="cmd" data-cmd="java"></div><p>然后创建一个工作文件夹：</p><div class="cmd" data-cmd="folder"></div><span class="tinyhead">B · 获取本教程的辅助源码</span><p>这里提供的是参考公开技术方法重新编写的示例工具 <span class="inline-code">SystemHelperUserTool.java</span>，不是原作者仓库中的 <span class="inline-code">SystemHelperControl.java</span>。本示例已通过电脑端编译检查，<strong>尚未在真机单独验证</strong>；运行前请和原作者已实测方案核对。你可以先展开阅读，再复制到记事本保存。</p><div class="file-row"><div><strong>SystemHelperUserTool.java</strong><small>纯文本 Java 源码 · 可自行审查</small></div><div class="file-actions"><button type="button" class="action" id="copySource">复制源码</button><button type="button" class="action" id="downloadSource">下载源码</button></div></div><div class="cmd" data-cmd="notepad"></div><p>运行后如果提示创建文件，选择“是”；将源码粘贴进去，按 <span class="inline-code">Ctrl + S</span> 保存。若通过“下载源码”按钮获取文件，请把它移动到刚创建的 <span class="inline-code">systemhelper-tools</span> 文件夹中。</p><details class="source-details"><summary>我想先看看 Java 源码（点击展开）</summary><pre id="sourcePreview"></pre></details><span class="tinyhead">C · 下载并验证 D8</span><p>JDK 只能编译 Java；Android 还需要把 <span class="inline-code">.class</span> 转换成 <span class="inline-code">.dex</span>。使用 Google R8 构建文件：</p><div class="cmd" data-cmd="r8"></div><div class="cmd" data-cmd="d8ver"></div><span class="tinyhead">D · 编译 / 转换</span><p>这两条仅在电脑上生成文件。JDK 21 显示“源值 8 已过时”的警告通常不代表编译失败。</p><div class="cmd" data-cmd="javac"></div><div class="cmd" data-cmd="d8"></div><p>完成后，工作目录里应出现 <span class="inline-code">classes.dex</span>。</p><span class="tinyhead">E · 将工具传到手机，先检查接口</span><div class="cmd" data-cmd="push"></div><div class="cmd" data-cmd="chmod"></div><div class="cmd" data-cmd="inspect"></div><p>检查返回 <span class="inline-code">READ_ONLY_CHECK_OK</span>，才能说明示例工具找到了接口；这一步<strong>不会卸载</strong>。</p><span class="tinyhead">F · 最后才是真正的用户级卸载</span><div class="important"><strong>这条会更改安装状态</strong>如果型号、系统版本、目标包名或前面的输出有任何不一致，停止操作，不要硬试。</div><div class="cmd" data-cmd="remove"></div><p>如果显示 <span class="inline-code">REQUEST_SENT_CHECK_PACKAGE_STATE</span>，只说明请求已提交，<strong>不是卸载成功证明</strong>。继续执行第 07 步的状态查询。</p></div></div><label class="step-done"><input type="checkbox" data-done="6">已确认适用路径；如不适用则停止</label></div></div></section>
-<section class="section" id="step7"><div class="steptop"><span class="stepnum">07</span><div class="stepcontent"><h2>验证成功后，记得重启复查</h2><p><strong>比命令返回“成功”更重要的，是系统真实状态。</strong>无论你走哪种路径，都用下面的只读查询检查：</p><div class="cmd" data-cmd="verify"></div><div class="sample"><b>本次实测结果（已去除个人设备标识）</b><pre>User 0: ... installed=false ... stopped=true ...</pre></div><p>看到 <span class="inline-code">installed=false</span>，表示当前用户的安装登记已取消。然后手动重启手机，再执行同一条命令，确认重启后仍然是 <span class="inline-code">false</span>。</p><p>如果使用了第 06 步的临时 DEX 工具，完成验证后清理：</p><div class="cmd" data-cmd="cleanup"></div><p>最后检查移动数据、电话和短信，再关闭“USB 调试”。系统大版本更新后建议重新确认安装状态。</p><label class="step-done"><input type="checkbox" data-done="7">重启后的 installed=false 已确认</label></div></div></section>
-<section class="section" id="step8"><div class="steptop"><span class="stepnum">08</span><div class="stepcontent"><h2>想恢复怎么办？</h2><p>因为前面做的是<strong>用户级卸载</strong>，没有直接删除系统分区的 APK，通常可以通过下面的命令尝试重新登记安装。只有需要恢复时才执行。</p><div class="cmd" data-cmd="restore"></div><p>然后回到第 07 步查询，理想结果应恢复为 <span class="inline-code">installed=true</span>。不同机型可能存在恢复限制，原作者记录的设备也没有逐一实际测试恢复操作，因此不承诺一定成功。</p><div class="callout"><strong>这个教程能保证绝对隐私安全吗？</strong>不能。它只验证特定包的用户安装状态，不代表设备没有其他数据采集机制，也无法撤回过去可能上传的信息。</div><label class="step-done"><input type="checkbox" data-done="8">已了解恢复方式和注意事项</label></div></div></section>
-<section class="section" id="case"><h2>这份教程是怎么来的</h2><p>下面是 Xiaomi 17 Pro Max（16GB RAM / 1TB）的一次真实操作摘要。保留关键系统输出，删除设备序列号和个人电脑路径，供其他人判断自己的情况是否相似。</p><div class="decision"><div class="drow"><b>设备</b><span>小米 17 Pro Max · HyperOS <span class="inline-code">OS4.0.6.0.XPBCNXM</span></span></div><div class="drow"><b>目标应用</b><span><span class="inline-code">com.mobiletools.systemhelper</span> · 版本 <span class="inline-code">4.0.0-20260910</span></span></div><div class="drow"><b>标准禁用</b><span><span class="inline-code">Cannot disable system packages.</span></span></div><div class="drow"><b>标准卸载</b><span><span class="inline-code">only root can delete system app for a particular user</span></span></div><div class="drow"><b>特殊方法</b><span>在 Shell UID 2000 下，调用 <span class="inline-code">deletePackageAsUser</span>，主用户安装状态变为 <span class="inline-code">installed=false</span>。</span></div><div class="drow"><b>复核结果</b><span>重启后依然 <span class="inline-code">installed=false</span>；移动数据、通话、短信测试正常；高通同名组件仍是 <span class="inline-code">installed=true</span>。</span></div></div><p>这是一台设备、一次系统构建版本上的实测记录，不是对所有小米手机、所有功能和未来系统更新的担保。</p></section>
-<section class="section" id="questions"><h2>常见问题</h2><div class="faq"><details><summary>为什么 CMD 会提示“adb 不是内部或外部命令”？</summary><p>你大概率没进入 <span class="inline-code">adb.exe</span> 所在的文件夹。打开真正的 <span class="inline-code">platform-tools</span> 文件夹，在顶部地址栏输入 <span class="inline-code">cmd</span> 回车，再运行 <span class="inline-code">adb devices</span>。</p></details><details><summary>为什么第一次出现 unauthorized，第二次就变成 device？</summary><p><span class="inline-code">unauthorized</span> 表示手机尚未授权这台电脑。手机点击“允许 USB 调试”后，再执行一次命令就能变成 <span class="inline-code">device</span>。</p></details><details><summary>为什么不直接删 APK？</summary><p>系统原始 APK 通常位于只读系统分区。用户级卸载仅改变指定用户的安装登记，更容易验证和恢复，也避免直接修改系统分区。</p></details><details><summary>为什么我的另一台小米不允许禁用或卸载？</summary><p>Android 版本、厂商改动和包的特权级别都可能影响卸载策略。相同应用名不代表相同包；同一包名也不代表不同构建版本的权限行为一致。</p></details><details><summary>第 06 步的 Java 源码是否来自原作者仓库？</summary><p>不是逐字复制。此页提供了参考公开技术接口而重新编写的演示源码，固定包名、User 0 和目标系统构建版本，默认只检查接口。该源码已通过 Java 编译，但未独立完成真机验证；真实成功的操作记录来自原作者的方法，详细来源请看下方链接。</p></details><details><summary>安装 VPN 或国外 App 就代表会被监控吗？</summary><p>不能这么推断。应用权限、网络访问、系统组件与实际的数据上报需要分别证实。卸载一个系统包不能证明其他机制不存在，也不能据此判断某位用户是否受到调查。</p></details><details><summary>网页会自动运行命令吗？</summary><p>不会。页面完全在浏览器本地运行。复制命令后仍由你自己在电脑 CMD 中确认执行。源码下载也只是下载普通文本文件。</p></details></div></section>
-<section class="sourcebox" id="sources"><h2>资料、出处与开源说明</h2><p>技术方法首先来自 zd-Ethan 的公开实测记录；本文做的是更适合新手的表达、界面及操作指引。我们不把作者的实测视为所有机型的普遍结论。</p><ul><li><a href="https://github.com/zd-Ethan/systemhelper" target="_blank" rel="noopener noreferrer">zd-Ethan/systemhelper · 小米 14 Pro / 17 Pro Max 原始技术记录</a></li><li><a href="https://developer.android.com/tools/adb" target="_blank" rel="noopener noreferrer">Google Android Debug Bridge 官方文档</a></li><li><a href="https://developer.android.com/tools/releases/platform-tools" target="_blank" rel="noopener noreferrer">Google Platform-Tools 官方下载</a></li><li><a href="https://r8.googlesource.com/r8/" target="_blank" rel="noopener noreferrer">Google R8/D8 项目</a></li></ul><p>页面及随包示例工具由 HAPPY Games 整理、重新编写，按 MIT License 开源；不包含原仓库未明确授权的源码或第三方二进制文件。提交公开反馈时请删除序列号、IMEI、手机号等敏感信息。</p></section>
-</div></div>
-</main>
-<footer class="footer"><div class="wrap footer-inner"><div>SystemHelper 操作指南 <span aria-hidden="true">·</span> 版本 2.0 <span aria-hidden="true">·</span> HAPPY Games</div><div><a href="#top">返回顶部</a> <span aria-hidden="true">·</span> 内容可离线阅读 <span aria-hidden="true">·</span> 不自动修改设备</div></div></footer>
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
-<script type="text/plain" id="sourceCode">
-import java.lang.reflect.InvocationTargetException;
+<body id="top">
+<a data-i18n="skip" class="skip" href="#before">Skip to content</a>
+<header><div class="wrap header-row">
+<a data-i18n="brand" class="site-name" href="#top">SystemHelper Guide</a>
+<div class="header-actions">
+<div id="language" role="group" aria-label="Language" data-label="language" hidden>
+<button type="button" data-language="en" aria-label="English" aria-pressed="true" lang="en">EN</button>
+<button type="button" data-language="zh-CN" aria-label="简体中文" aria-pressed="false" lang="zh-CN">简体中文</button>
+</div>
+<button type="button" id="theme-toggle" hidden></button>
+</div></div></header>
+<div class="wrap layout" id="steps">
+<nav class="toc" aria-label="On this page" data-label="contents">
+<button data-i18n="tocToggle" type="button" id="toc-toggle" aria-expanded="false" aria-controls="toc-body" hidden>On this page</button>
+<p data-i18n="contents" class="toc-heading">On this page</p>
+<div id="toc-body">
+<ol>
+<li>
+<a data-i18n="nav.overview" href="#before">Overview</a>
+</li><li>
+<a data-i18n="nav.privacy" href="#privacy">Why remove it?</a>
+</li><li>
+<a data-i18n="nav.setup" href="#step1">Quick start</a>
+</li><li>
+<a data-i18n="nav.identify" href="#step4">Identify the package</a>
+</li><li>
+<a data-i18n="nav.standard" href="#step5">Standard ADB steps</a>
+</li><li>
+<a data-i18n="nav.advanced" href="#step6">Xiaomi-specific method</a>
+</li><li>
+<a data-i18n="nav.verify" href="#step7">Verify and restore</a>
+</li><li>
+<a data-i18n="nav.case" href="#case">Test record</a>
+</li><li>
+<a data-i18n="nav.faq" href="#questions">FAQ</a>
+</li><li>
+<a data-i18n="nav.risks" href="#risks">Risks</a>
+</li><li>
+<a data-i18n="nav.sources" href="#sources">Sources and license</a>
+</li>
+</ol>
+<div id="progress" hidden><p id="progress-text"></p>
+<button data-i18n="reset" id="reset-progress" type="button">Clear checkmarks</button>
+</div></div></nav>
+<main><article>
+<section id="before" tabindex="-1">
+<h1 data-i18n="title">SystemHelper Guide</h1>
+<p data-i18n="intro" class="intro">Found an app called SystemHelper on your Android phone? Use Android Debug Bridge (ADB) to check its package name and install state before deciding whether to change anything.</p>
+<p data-i18n="purpose">This guide starts with the USB connection and explains what each command does. The page copies commands on request; you decide which ones to run on your computer.</p>
+<p data-i18n="scope">Start with the general checks. Whether Android lets you disable or remove the package depends on the phone and its system build. The advanced method has a recorded success on one specific Xiaomi build.</p>
+<p data-i18n="target" class="note"><strong>Check the full package name.</strong> The target is <code>com.mobiletools.systemhelper</code>. Leave <code>com.qualcomm.qti.services.systemhelper</code>, a separate Qualcomm system component, alone.</p>
+</section>
+<section id="privacy">
+<h2 data-i18n="privacy.title">Why some users remove SystemHelper</h2>
+<p data-i18n="privacy.identity"><code>com.mobiletools.systemhelper</code> is preinstalled on some Android phones sold in mainland China. Public analyses link it to China Unicom device management (DM). As a system component, it may be absent from the usual uninstall screen. The reports raise questions about data collection and user awareness. They do not establish that the component is malware.</p>
+<p data-i18n="privacy.samples">In November 2026, researchers examining <a href="https://github.com/acxun/hyperos-dm-report">one HyperOS sample</a> and <a href="https://github.com/DreamingCats/com.mobiletools.systemhelper_analysis">one realme sample</a> reported fields such as these across the versions they examined.</p>
+<table><thead>
+<tr><th data-i18n="privacy.fields" scope="col">Category</th><th data-i18n="privacy.fields.value" scope="col">Examples</th></tr>
+</thead><tbody>
+<tr><th data-i18n="privacy.device" scope="row">Device</th><td data-i18n="privacy.device.value">IMEI, device model</td></tr>
+<tr><th data-i18n="privacy.sim" scope="row">SIM</th><td data-i18n="privacy.sim.value">IMSI, ICCID, carrier information</td></tr>
+<tr><th data-i18n="privacy.apps" scope="row">Installed apps</th><td data-i18n="privacy.apps.value">Third-party app names and package names</td></tr>
+<tr><th data-i18n="privacy.usage" scope="row">App usage</th><td data-i18n="privacy.usage.value">Foreground usage time and data usage</td></tr>
+<tr><th data-i18n="privacy.network" scope="row">Network and location</th><td data-i18n="privacy.network.value">Cell tower, signal, or location fields</td></tr>
+</tbody></table>
+<p data-i18n="privacy.evidence">The reports identified logic for sending data to <code>dm.wo.com.cn:18080</code>. One report analyzed captured traffic on its test device. Code, cached records, and observed traffic provide different kinds of evidence. These findings do not show that every field was received for every phone. Behavior can vary by manufacturer, build, app version, and network.</p>
+<p data-i18n="privacy.reason">App lists can reveal more when combined with usage times and device or SIM identifiers. Together, these fields can indicate which apps someone uses and how often. Some owners disable the component or remove it for their user to limit further collection by that component.</p>
+<p data-i18n="privacy.choice">Removal is optional. The component may support carrier registration or device management on your phone, and disabling it can affect features. Removing it for one user cannot undo earlier transfers or tell you what other services collect. Check the package, back up important data, and read the risks before deciding.</p>
+</section>
+<section id="step1">
+<h2 data-i18n="setup.title">1. Get ADB ready</h2>
+<p data-i18n="setup.get">Use a Windows computer and a USB cable that supports data. Get <a href="https://developer.android.com/tools/releases/platform-tools">Android SDK Platform-Tools from Google</a> and extract the ZIP file.</p>
+<p data-i18n="setup.cmd">Open the extracted <code>platform-tools</code> folder and check for <code>adb.exe</code>. Type <code>cmd</code> in File Explorer’s address bar and press Enter. This opens Command Prompt in the right folder.</p>
+<p data-i18n="setup.unix">On macOS or Linux, open a terminal in the extracted <code>platform-tools</code> folder. If <code>adb</code> is missing from your PATH, use <code>./adb</code> in its place. Select macOS / Linux in step 4 for the matching filters. The advanced example uses Windows CMD.</p>
+<label class="checkpoint" hidden><input type="checkbox" data-done="1"> <span data-i18n="done.1">ADB is ready</span></label>
+</section>
+<section id="step2">
+<h2 data-i18n="usb.title">2. Enable USB debugging</h2>
+<p data-i18n="usb.enable">In Settings, open About phone and tap the build or OS version repeatedly to unlock Developer options. Menu names vary. On HyperOS, look under Settings → My device → Detailed info and specs, then Settings → Additional settings → Developer options. Turn on USB debugging.</p>
+<p data-i18n="usb.approve">Connect only the phone you plan to check. Unlock it and approve the USB debugging prompt if you recognize the computer. The recorded Xiaomi procedure used ordinary ADB access with the bootloader locked.</p>
+<label class="checkpoint" hidden><input type="checkbox" data-done="2"> <span data-i18n="done.2">USB debugging is enabled</span></label>
+</section>
+<section id="step3">
+<h2 data-i18n="connect.title">3. Check the connection</h2>
+<p data-i18n="connect.run">Paste this command into the terminal and press Enter.</p>
+<figure class="command" data-command="devices">
+  <figcaption><span data-i18n="command.devices">Read only · List connected devices</span></figcaption>
+  <pre><code>adb devices</code></pre>
+</figure>
+<figure class="output">
+<figcaption data-i18n="connect.sample">Example output</figcaption>
+<pre>List of devices attached
+XXXXXXXX    device</pre>
+</figure>
+<p data-i18n="connect.result"><code>device</code> means the phone is ready. If you see <code>unauthorized</code>, approve the prompt on the phone and run the command again. If the list is empty, check the cable, USB port, debugging setting, and Windows USB driver. Hide the device serial number before sharing a screenshot.</p>
+<label class="checkpoint" hidden><input type="checkbox" data-done="3"> <span data-i18n="done.3">ADB lists the phone as device</span></label>
+</section>
+<section id="step4">
+<h2 data-i18n="identify.title">4. Identify the package and check its state</h2>
+<p data-i18n="identify.names">Several apps can display the name SystemHelper. Match the full package name in the output. If you only see the Qualcomm package or a different name, stop here.</p>
+<fieldset id="platform" hidden>
+<legend data-i18n="platform">Computer terminal</legend>
+<label><input type="radio" name="platform" value="win" checked> Windows CMD</label>
+<label><input type="radio" name="platform" value="unix"> macOS / Linux</label>
+</fieldset>
+<figure class="command" data-command="find">
+  <figcaption><span data-i18n="command.find">Read only · Find packages and APK paths</span></figcaption>
+  <pre><code data-unix="adb shell pm list packages -f | grep -i systemhelper">adb shell pm list packages -f | findstr /i systemhelper</code></pre>
+</figure>
+<p data-i18n="identify.system">Confirm the target appears in the system package list before following the removal steps. This procedure covers the preinstalled system package.</p>
+<figure class="command" data-command="system">
+  <figcaption><span data-i18n="command.system">Read only · Confirm the target is a system package</span></figcaption>
+  <pre><code>adb -d shell pm list packages -s -u --user 0 com.mobiletools.systemhelper</code></pre>
+</figure>
+<figure class="command" data-command="who">
+  <figcaption><span data-i18n="command.who">Read only · Check the active Android user</span></figcaption>
+  <pre><code>adb shell am get-current-user</code></pre>
+</figure>
+<figure class="command" data-command="build">
+  <figcaption><span data-i18n="command.build">Read only · Check the system build</span></figcaption>
+  <pre><code>adb shell getprop ro.build.version.incremental</code></pre>
+</figure>
+<figure class="command" data-command="status">
+  <figcaption><span data-i18n="command.status">Read only · Check app version and install state</span></figcaption>
+  <pre><code data-unix="adb shell dumpsys package com.mobiletools.systemhelper | grep -E 'versionName=|User 0:'">adb shell dumpsys package com.mobiletools.systemhelper | findstr /c:"versionName=" /c:"User 0:"</code></pre>
+</figure>
+<p data-i18n="identify.read">Confirm the active user is <code>0</code>. If you are using a guest profile or a second space, switch back first. In the <code>User 0:</code> line, note <code>installed=</code> and <code>enabled=</code>. Note <code>versionName=</code> for the advanced method. If the target already shows <code>installed=false</code>, skip removal. If any expected line is missing, verify the package and connection.</p>
+<label class="checkpoint" hidden><input type="checkbox" data-done="4"> <span data-i18n="done.4">I checked the package and system build</span></label>
+</section>
+<section id="step5">
+<h2 data-i18n="standard.title">5. Try standard ADB commands</h2>
+<p data-i18n="standard.before">Continue only if the package name matches, the active user is <code>0</code>, and the target shows <code>installed=true</code>. Read <a href="#step8">the recovery steps</a> first. The next two commands change the phone.</p>
+<figure class="command" data-command="disable">
+  <figcaption><span data-i18n="command.disable">Changes the phone · Disable for User 0</span></figcaption>
+  <pre><code>adb -d shell pm disable-user --user 0 com.mobiletools.systemhelper</code></pre>
+</figure>
+<p data-i18n="standard.disabled">If the command returns <samp>new state: disabled-user</samp>, check for <code>enabled=3</code>. The app can still show <code>installed=true</code> while disabled. If that is enough for you, stop here. <samp>Cannot disable system packages.</samp> or <samp>SecurityException</samp> means the system refused the request. Read the current state before trying anything else.</p>
+<p data-i18n="standard.remove">If you still want to remove the package for User 0, use the following command. <code>-k</code> asks Android to keep app data. Back up anything important first.</p>
+<figure class="command" data-command="uninstall">
+  <figcaption><span data-i18n="command.uninstall">Changes the phone · Uninstall for User 0</span></figcaption>
+  <pre><code>adb shell pm uninstall -k --user 0 com.mobiletools.systemhelper</code></pre>
+</figure>
+<p data-i18n="standard.result">If you see <samp>Success</samp>, go to <a href="#step7">verification</a>. If you see <samp>Failure</samp> or <samp>only root can delete system app for a particular user</samp>, check the package state again. If it still shows <code>installed=true</code>, removal did not complete. Any earlier successful disable may still apply.</p>
+<label class="checkpoint" hidden><input type="checkbox" data-done="5"> <span data-i18n="done.5">I recorded the result of the standard method</span></label>
+</section>
+<section id="step6">
+<h2 data-i18n="advanced.title">6. Advanced method for the tested Xiaomi build</h2>
+<p data-i18n="advanced.scope">Consider this method only for the Xiaomi 17 Pro Max on HyperOS <code>OS4.0.6.0.XPBCNXM</code> with SystemHelper <code>4.0.0-20260910</code>, after standard removal is refused. If any detail differs, stop after the standard checks.</p>
+<p data-i18n="advanced.upstream">The <a href="https://github.com/zd-Ethan/systemhelper">upstream test</a> used its own temporary tool to call <code>IPackageManager.deletePackageAsUser</code> as the ordinary ADB shell (UID 2000). The original system APK remained. The separate Java example below passed desktop compilation only. See the upstream record for the exact tested procedure.</p>
+<details id="advanced">
+<summary data-i18n="advanced.open">Windows example: build, inspect, and submit the request</summary>
+<label class="checkpoint" id="confirm-label" hidden><input type="checkbox" id="advanced-confirm">
+<span data-i18n="advanced.confirm">I verified the exact model, build, app version, package name, and User 0 state.</span>
+</label>
+<h3 data-i18n="advanced.prepare">A. Prepare Java and a work folder</h3>
+<p data-i18n="advanced.jdk">Use JDK 17 or 21. Both tools should print version information. If CMD reports that a command is unrecognized, check the JDK installation and PATH.</p>
+<figure class="command" data-command="java">
+  <figcaption><span data-i18n="command.java">On the computer · Check Java and javac</span></figcaption>
+  <pre><code>java -version &amp;&amp; javac -version</code></pre>
+</figure>
+<figure class="command" data-command="folder">
+  <figcaption><span data-i18n="command.folder">On the computer · Create a work folder</span></figcaption>
+  <pre><code>mkdir "%USERPROFILE%\Desktop\systemhelper-tools"</code></pre>
+</figure>
+<h3 data-i18n="advanced.source">B. Save the example source</h3>
+<p data-i18n="advanced.notepad">Open the file in Notepad using the command below. If prompted to create it, choose Yes. Paste the Java source and press <code>Ctrl + S</code>. The file should be named <code>SystemHelperUserTool.java</code> in the <code>systemhelper-tools</code> folder you just created.</p>
+<figure class="command" data-command="notepad">
+  <figcaption><span data-i18n="command.notepad">On the computer · Open the Java file in Notepad</span></figcaption>
+  <pre><code>notepad "%USERPROFILE%\Desktop\systemhelper-tools\SystemHelperUserTool.java"</code></pre>
+</figure>
+<details>
+<summary data-i18n="advanced.preview">View Java source</summary>
+<button data-i18n="advanced.copySource" type="button" id="copy-source" hidden>Copy source</button>
+<pre class="source-code"><code>import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -64,17 +331,17 @@ public final class SystemHelperUserTool {
 
     public static void main(String[] args) throws Exception {
         String operation = args.length == 1 ? args[0] : "inspect";
-        if (!"inspect".equals(operation) && !"confirm-remove".equals(operation)) {
+        if (!"inspect".equals(operation) &amp;&amp; !"confirm-remove".equals(operation)) {
             throw new IllegalArgumentException("Use: inspect or confirm-remove");
         }
 
-        Class<?> process = Class.forName("android.os.Process");
+        Class&lt;?&gt; process = Class.forName("android.os.Process");
         int callingUid = ((Integer) process.getMethod("myUid").invoke(null)).intValue();
         if (callingUid != 2000) {
             throw new SecurityException("ADB shell UID 2000 required; got " + callingUid);
         }
 
-        Class<?> properties = Class.forName("android.os.SystemProperties");
+        Class&lt;?&gt; properties = Class.forName("android.os.SystemProperties");
         String currentBuild = (String) properties.getMethod("get", String.class)
                 .invoke(null, "ro.build.version.incremental");
         if (!TESTED_BUILD.equals(currentBuild)) {
@@ -82,14 +349,14 @@ public final class SystemHelperUserTool {
                     + " (expected " + TESTED_BUILD + "). Stop here.");
         }
 
-        Class<?> managerInterface = Class.forName("android.content.pm.IPackageManager");
+        Class&lt;?&gt; managerInterface = Class.forName("android.content.pm.IPackageManager");
         Object manager = Class.forName("android.app.ActivityThread")
                 .getMethod("getPackageManager").invoke(null);
-        Class<?> observerType = Class.forName("android.content.pm.IPackageDeleteObserver");
+        Class&lt;?&gt; observerType = Class.forName("android.content.pm.IPackageDeleteObserver");
         Method removeForUser = managerInterface.getMethod("deletePackageAsUser",
                 String.class, int.class, observerType, int.class, int.class);
 
-        Class<?> constants = Class.forName("android.content.pm.PackageManager");
+        Class&lt;?&gt; constants = Class.forName("android.content.pm.PackageManager");
         int flags = constants.getField("DELETE_KEEP_DATA").getInt(null)
                 | constants.getField("DELETE_SYSTEM_APP").getInt(null);
 
@@ -111,60 +378,588 @@ public final class SystemHelperUserTool {
             System.exit(1);
         }
     }
-}
+}</code></pre>
+</details>
+<h3 data-i18n="advanced.d8">C. Get D8 and check its version</h3>
+<p data-i18n="advanced.d8help">Android runs DEX bytecode. Use D8 from the specified Google R8 build to convert the Java class file. Confirm that D8 prints its version before compiling.</p>
+<figure class="command" data-command="r8">
+  <figcaption><span data-i18n="command.r8">On the computer · Get R8 8.3.37</span></figcaption>
+  <pre><code>curl.exe -fL "https://storage.googleapis.com/r8-releases/raw/8.3.37/r8.jar" -o "%USERPROFILE%\Desktop\systemhelper-tools\r8-8.3.37.jar"</code></pre>
+</figure>
+<figure class="command" data-command="d8ver">
+  <figcaption><span data-i18n="command.d8ver">On the computer · Check the D8 version</span></figcaption>
+  <pre><code>java -cp "%USERPROFILE%\Desktop\systemhelper-tools\r8-8.3.37.jar" com.android.tools.r8.D8 --version</code></pre>
+</figure>
+<h3 data-i18n="advanced.compile">D. Build the temporary tool</h3>
+<figure class="command" data-command="javac">
+  <figcaption><span data-i18n="command.javac">On the computer · Compile the Java source</span></figcaption>
+  <pre><code>javac --release 8 -encoding UTF-8 -d "%USERPROFILE%\Desktop\systemhelper-tools" "%USERPROFILE%\Desktop\systemhelper-tools\SystemHelperUserTool.java"</code></pre>
+</figure>
+<figure class="command" data-command="d8">
+  <figcaption><span data-i18n="command.d8">On the computer · Generate the DEX file</span></figcaption>
+  <pre><code>java -cp "%USERPROFILE%\Desktop\systemhelper-tools\r8-8.3.37.jar" com.android.tools.r8.D8 --min-api 26 --output "%USERPROFILE%\Desktop\systemhelper-tools" "%USERPROFILE%\Desktop\systemhelper-tools\SystemHelperUserTool.class"</code></pre>
+</figure>
+<p data-i18n="advanced.buildcheck">Look for <code>classes.dex</code> in the work folder. A JDK 21 warning about source level 8 can appear even when compilation succeeds. If you see <samp>error: file not found</samp>, check the filename and folder before retrying.</p>
+<h3 data-i18n="advanced.inspect">E. Transfer the tool and inspect the interface</h3>
+<figure class="command" data-command="push">
+  <figcaption><span data-i18n="command.push">Changes the phone · Push the temporary DEX file</span></figcaption>
+  <pre><code>adb push "%USERPROFILE%\Desktop\systemhelper-tools\classes.dex" /data/local/tmp/systemhelper-guide.dex</code></pre>
+</figure>
+<figure class="command" data-command="chmod">
+  <figcaption><span data-i18n="command.chmod">Changes the phone · Make the DEX file read-only</span></figcaption>
+  <pre><code>adb shell chmod 444 /data/local/tmp/systemhelper-guide.dex</code></pre>
+</figure>
+<figure class="command" data-command="inspect">
+  <figcaption><span data-i18n="command.inspect">Read only · Inspect the package manager interface</span></figcaption>
+  <pre><code>adb shell "CLASSPATH=/data/local/tmp/systemhelper-guide.dex app_process /system/bin SystemHelperUserTool inspect"</code></pre>
+</figure>
+<p data-i18n="advanced.inspectResult">Proceed only if the example prints <samp>READ_ONLY_CHECK_OK</samp>. If you get <samp>Permission denied</samp>, <samp>NoSuchMethodException</samp>, or <samp>Unverified OS build</samp>, stop and remove the temporary file with the cleanup command in step 7.</p>
+<h3 data-i18n="advanced.submit">F. Submit the uninstall request</h3>
+<p data-i18n="advanced.stop" class="note">Run this only after the previous check passes and you still want to remove the package for User 0. Stop if the device, build, package, or output differs from the instructions.</p>
+<figure class="command" data-command="remove">
+  <figcaption><span data-i18n="command.remove">Changes the phone · Submit an uninstall request</span></figcaption>
+  <pre><code>adb shell "CLASSPATH=/data/local/tmp/systemhelper-guide.dex app_process /system/bin SystemHelperUserTool confirm-remove"</code></pre>
+</figure>
+<p data-i18n="advanced.sent"><samp>REQUEST_SENT_CHECK_PACKAGE_STATE</samp> means the request was submitted. Continue to step 7 to see whether it worked. If the request throws an error, read the current state and clean up the temporary file.</p>
+</details>
+<label class="checkpoint" hidden><input type="checkbox" data-done="6"> <span data-i18n="done.6">I identified the applicable method</span></label>
+</section>
+<section id="step7">
+<h2 data-i18n="verify.title">7. Verify, reboot, and check again</h2>
+<figure class="command" data-command="verify">
+  <figcaption><span data-i18n="command.verify">Read only · Check install state for User 0</span></figcaption>
+  <pre><code data-unix="adb shell dumpsys package com.mobiletools.systemhelper | grep 'User 0:'">adb shell dumpsys package com.mobiletools.systemhelper | findstr /c:"User 0:"</code></pre>
+</figure>
+<figure class="output">
+<figcaption data-i18n="verify.example">Recorded output, with device identifiers removed</figcaption>
+<pre>User 0: ... installed=false ... stopped=true ...</pre>
+</figure>
+<p data-i18n="verify.result">For removal, look for <code>installed=false</code> on the <code>User 0:</code> line. For a disable-only change, look for <code>enabled=3</code>. A success message or a missing process is insufficient on its own. Reboot, unlock and reconnect the phone, then check again. Verify mobile data, incoming and outgoing calls, and SMS.</p>
+<p data-i18n="verify.cleanup">If you transferred the temporary DEX, remove it after verification or when stopping partway through the advanced steps. No output is expected when cleanup succeeds. Turn off USB debugging when finished. Check the package again after a system update or factory reset.</p>
+<figure class="command" data-command="cleanup">
+  <figcaption><span data-i18n="command.cleanup">Changes the phone · Remove the temporary DEX file</span></figcaption>
+  <pre><code>adb shell rm -f /data/local/tmp/systemhelper-guide.dex</code></pre>
+</figure>
+<label class="checkpoint" hidden><input type="checkbox" data-done="7"> <span data-i18n="done.7">I checked the state again after rebooting</span></label>
+</section>
+<section id="step8">
+<h2 data-i18n="restore.title">8. Restore the package when needed</h2>
+<p data-i18n="restore.apk">User-level removal changes the install state for a specific user. It leaves the original system APK in place. If the APK is still available, try registering it again for User 0.</p>
+<figure class="command" data-command="restore">
+  <figcaption><span data-i18n="command.restore">Changes the phone · Restore installation for User 0</span></figcaption>
+  <pre><code>adb shell cmd package install-existing --user 0 com.mobiletools.systemhelper</code></pre>
+</figure>
+<p data-i18n="restore.verify">Check for <code>installed=true</code>. The upstream tests did not attempt recovery on either phone. If you disabled the app earlier, also check <code>enabled=</code>. Restore only the state you recorded before making changes.</p>
+<p data-i18n="restore.default">If the original value was <code>enabled=0</code>, restore the default state.</p>
+<figure class="command" data-command="default-state">
+  <figcaption><span data-i18n="command.default-state">Changes the phone · Restore the default enabled state</span></figcaption>
+  <pre><code>adb -d shell pm default-state --user 0 com.mobiletools.systemhelper</code></pre>
+</figure>
+<p data-i18n="restore.enabled">If the original value was <code>enabled=1</code>, explicitly enable the package. If the original value differs or a command fails, keep the output and check recovery guidance for your build.</p>
+<figure class="command" data-command="enable">
+  <figcaption><span data-i18n="command.enable">Changes the phone · Enable the package for User 0</span></figcaption>
+  <pre><code>adb -d shell pm enable --user 0 com.mobiletools.systemhelper</code></pre>
+</figure>
+<label class="checkpoint" hidden><input type="checkbox" data-done="8"> <span data-i18n="done.8">I reviewed the recovery steps</span></label>
+</section>
+<section id="case">
+<h2 data-i18n="case.title">Xiaomi 17 Pro Max test record</h2>
+<p data-i18n="case.intro">This project’s device record covers one phone and one build. The successful uninstall used the upstream tool. The result does not establish compatibility with other phones or later updates.</p>
+<table><thead>
+<tr><th data-i18n="case.columns" scope="col">Item</th><th data-i18n="case.columns.value" scope="col">Recorded result</th></tr>
+</thead><tbody>
+<tr><th data-i18n="case.device" scope="row">Device</th><td data-i18n="case.device.value">Xiaomi 17 Pro Max, 16 GB RAM / 1 TB</td></tr>
+<tr><th data-i18n="case.os" scope="row">System</th><td data-i18n="case.os.value">HyperOS <code>OS4.0.6.0.XPBCNXM</code></td></tr>
+<tr><th data-i18n="case.package" scope="row">Target package</th><td data-i18n="case.package.value"><code>com.mobiletools.systemhelper</code></td></tr>
+<tr><th data-i18n="case.version" scope="row">App version</th><td data-i18n="case.version.value"><code>4.0.0-20260910</code></td></tr>
+<tr><th data-i18n="case.root" scope="row">Root and bootloader</th><td data-i18n="case.root.value">Root access not used. Bootloader not unlocked.</td></tr>
+<tr><th data-i18n="case.disable" scope="row">Standard disable</th><td data-i18n="case.disable.value"><samp>Cannot disable system packages.</samp></td></tr>
+<tr><th data-i18n="case.remove" scope="row">Standard uninstall</th><td data-i18n="case.remove.value"><samp>only root can delete system app for a particular user</samp></td></tr>
+<tr><th data-i18n="case.method" scope="row">Successful method</th><td data-i18n="case.method.value"><code>deletePackageAsUser</code> as ADB shell (UID 2000)</td></tr>
+<tr><th data-i18n="case.reboot" scope="row">Reboot check</th><td data-i18n="case.reboot.value">User 0 still reported <code>installed=false</code>.</td></tr>
+<tr><th data-i18n="case.basics" scope="row">Basic checks</th><td data-i18n="case.basics.value">Mobile data, calls, and SMS worked. The Qualcomm component remained <code>installed=true</code>.</td></tr>
+</tbody></table>
+</section>
+<section id="questions">
+<h2 data-i18n="faq.title">Frequently asked questions</h2>
+<details>
+  <summary data-i18n="faq.adb">Why can’t Windows find adb?</summary>
+  <p data-i18n="answer.adb">Open Command Prompt from the folder containing <code>adb.exe</code>. In PowerShell, use <code>.\adb.exe</code> from that folder or switch to CMD.</p>
+</details>
+<details>
+  <summary data-i18n="faq.unauthorized">What does unauthorized mean?</summary>
+  <p data-i18n="answer.unauthorized">Unlock the phone and approve USB debugging for your computer. If the prompt is missing, revoke USB debugging authorizations in Developer options, reconnect, and run <code>adb devices</code> again.</p>
+</details>
+<details>
+  <summary data-i18n="faq.disable">What if Android refuses disable-user?</summary>
+  <p data-i18n="answer.disable">Read the package state first. Once you have checked the package, user, and connection, you can try standard user-level removal if you still want it.</p>
+</details>
+<details>
+  <summary data-i18n="faq.uninstall">What if Android also refuses uninstall --user 0?</summary>
+  <p data-i18n="answer.uninstall">Fix connection errors before trying again. If the system explicitly denies removal, stop after the standard checks unless your model and build match the recorded Xiaomi case.</p>
+</details>
+<details>
+  <summary data-i18n="faq.apk">Why is the APK still there after installed=false?</summary>
+  <p data-i18n="answer.apk">The flag describes whether the package is installed for User 0. The original APK stays in the system partition so Android may be able to register it again with <code>install-existing</code>.</p>
+</details>
+<details>
+  <summary data-i18n="faq.calls">Will this affect calls, SMS, or mobile data?</summary>
+  <p data-i18n="answer.calls">All three worked in the recorded Xiaomi test. Dependencies can differ between phones and builds. Test these features on your own device after any change.</p>
+</details>
+<details>
+  <summary data-i18n="faq.root">Do I need root?</summary>
+  <p data-i18n="answer.root">Read-only checks and the recorded Xiaomi removal use ordinary ADB shell access. A manufacturer can still block changes made from that account.</p>
+</details>
+<details>
+  <summary data-i18n="faq.other">Can I use this on another brand?</summary>
+  <p data-i18n="answer.other">Use the read-only checks first. Consider standard ADB actions only for the exact target package. The advanced result applies to the model and build in the test record.</p>
+</details>
+<details>
+  <summary data-i18n="faq.example">Is the bundled Java example the upstream tool?</summary>
+  <p data-i18n="answer.example">It is an independent implementation with a fixed package, User 0, and build. It defaults to inspection and passed desktop compilation. The device test used the upstream implementation.</p>
+</details>
+<details>
+  <summary data-i18n="faq.browser">Does the website run any commands?</summary>
+  <p data-i18n="answer.browser">You run commands yourself in a terminal. The site displays and copies text and stores your language, theme, and step checkmarks in the browser.</p>
+</details>
+</section>
+<section id="risks">
+<h2 data-i18n="risks.title">Risks and scope</h2>
+<p data-i18n="risks.device">Use this guide for research and personal device management. Make changes only to a device you are authorized to manage. Back up important data, record the starting state, and consider whether the phone relies on the component. System updates can change both removal and recovery behavior.</p>
+<p data-i18n="risks.privacy">Removal checks establish the install state of one package for one Android user. They do not establish what the phone as a whole collects or sends.</p>
+</section>
+<section id="sources">
+<h2 data-i18n="sources.title">Sources and license</h2>
+<ul>
+<li><a data-i18n="source.upstream" href="https://github.com/zd-Ethan/systemhelper">zd-Ethan — upstream removal procedure and test record</a></li>
+<li><a data-i18n="source.hyperos" href="https://github.com/acxun/hyperos-dm-report">acxun — primary HyperOS device-management analysis</a></li>
+<li><a data-i18n="source.realme" href="https://github.com/DreamingCats/com.mobiletools.systemhelper_analysis">DreamingCats — primary analysis of a realme sample</a></li>
+<li><a data-i18n="source.bufanche" href="https://bufanche.com/guides/unicom-systemhelper/">Bufanche — coverage of SystemHelper reporting</a></li>
+<li><a data-i18n="source.adb" href="https://developer.android.com/tools/adb">Android Debug Bridge documentation</a></li>
+<li><a data-i18n="source.platform" href="https://developer.android.com/tools/releases/platform-tools">Android SDK Platform-Tools</a></li>
+<li><a data-i18n="source.r8" href="https://r8.googlesource.com/r8/">Google R8/D8</a></li>
+</ul>
+<p data-i18n="sources.license">HAPPY Games publishes the guide and independent example under the <a href="./LICENSE">MIT License</a>. Upstream code and third-party tools follow their own terms.</p>
+<p data-i18n="sources.contribute">See the <a href="https://github.com/happy-games/SystemHelper-Guide/blob/main/CONTRIBUTING.md">contribution guide</a> for reporting another device. Remove serial numbers, device and SIM identifiers, phone numbers, and personal file paths from logs before sharing.</p>
+</section>
+</article></main></div>
+<footer><div class="wrap footer-row">
+<a data-i18n="footer.repo" href="https://github.com/happy-games/SystemHelper-Guide">HAPPY Games · GitHub repository</a>
+<a data-i18n="footer.top" href="#top">Back to top</a>
+</div></footer>
+<div id="copy-status" class="sr-only" role="status"></div>
 
+<script type="application/json" id="english-ui">
+{
+  "pageTitle": "SystemHelper Guide",
+  "description": "Identify SystemHelper on Android with ADB. Check, disable, remove for User 0, verify after a reboot, and restore when supported.",
+  "language": "Language",
+  "themeDark": "Switch to dark",
+  "themeLight": "Switch to light",
+  "copyCommand": "Copy command",
+  "copied": "Copied",
+  "copyFailed": "Copy manually",
+  "copyLocked": "Confirm the device first",
+  "progress": "{count} of 8 steps checked"
+}
 </script>
+
+<script type="application/json" id="chinese">
+{
+  "pageTitle": "SystemHelper 操作指南",
+  "description": "用 ADB 识别 Android 手机上的 SystemHelper，检查状态、禁用、为 User 0 卸载、重启复查，并在设备支持时恢复。",
+  "language": "语言",
+  "themeDark": "切换到深色",
+  "themeLight": "切换到浅色",
+  "copyCommand": "复制命令",
+  "copied": "已复制",
+  "copyFailed": "请手动复制",
+  "copyLocked": "请先确认设备",
+  "progress": "已勾选 {count} / 8 步",
+  "skip": "跳到正文",
+  "brand": "SystemHelper 指南",
+  "tocToggle": "本页目录",
+  "contents": "本页目录",
+  "nav.overview": "阅读说明",
+  "nav.privacy": "为什么有人卸载",
+  "nav.setup": "快速开始",
+  "nav.identify": "识别与检查",
+  "nav.standard": "标准 ADB 流程",
+  "nav.advanced": "小米实测方案",
+  "nav.verify": "验证与恢复",
+  "nav.case": "实测记录",
+  "nav.faq": "常见问题",
+  "nav.risks": "风险提醒",
+  "nav.sources": "来源与许可",
+  "reset": "清空勾选",
+  "title": "SystemHelper 操作指南",
+  "intro": "在 Android 手机上发现名为 SystemHelper 的应用？先用 Android 调试桥（ADB）核对包名和安装状态，再决定是否处理。",
+  "purpose": "教程从连接手机讲起，逐条解释命令。网页可以复制命令，由你自己决定在电脑上执行哪一条。",
+  "scope": "先做通用检查。能否禁用或卸载取决于机型和系统构建。高级方案只在一个特定的小米构建上有成功记录。",
+  "target": "<strong>先核对完整包名。<\/strong> 本教程处理 <code>com.mobiletools.systemhelper<\/code>。名称相似的 <code>com.qualcomm.qti.services.systemhelper<\/code> 是独立的高通系统组件，请保留。",
+  "privacy.title": "为什么有人选择卸载 SystemHelper？",
+  "privacy.identity": "<code>com.mobiletools.systemhelper<\/code> 预装在部分中国大陆版 Android 手机上。公开分析将它与中国联通的终端设备管理（DM）功能联系起来。作为系统组件，它不一定能从常规设置界面卸载。相关报告提出了数据采集和用户知情方面的疑问，现有资料并未证实它是恶意软件。",
+  "privacy.samples": "2026 年 11 月，研究者在分析<a href=\"https://github.com/acxun/hyperos-dm-report\">一个 HyperOS 样本<\/a>和<a href=\"https://github.com/DreamingCats/com.mobiletools.systemhelper_analysis\">一个 realme 样本<\/a>时，报告了下列数据字段。结论适用于各自分析的样本。",
+  "privacy.fields": "信息类别",
+  "privacy.fields.value": "可能涉及的数据",
+  "privacy.device": "设备信息",
+  "privacy.device.value": "IMEI、设备型号",
+  "privacy.sim": "SIM 卡信息",
+  "privacy.sim.value": "IMSI、ICCID、运营商信息",
+  "privacy.apps": "已安装应用",
+  "privacy.apps.value": "第三方应用名称和包名",
+  "privacy.usage": "应用使用情况",
+  "privacy.usage.value": "前台使用时长和流量",
+  "privacy.network": "网络与位置",
+  "privacy.network.value": "基站、信号或位置字段",
+  "privacy.evidence": "报告发现了向 <code>dm.wo.com.cn:18080<\/code> 发送数据的逻辑。其中一份报告还分析了测试设备上抓到的流量。代码、本地缓存和实际流量是不同层次的证据，不能据此认定每台设备的每项数据都已成功送达。具体行为可能因厂商、系统构建、应用版本和网络而异。",
+  "privacy.reason": "应用列表与使用时长、设备或 SIM 标识关联后，可能反映某人用了哪些应用、用得多频繁。有些用户因此选择禁用或为当前用户卸载，以减少该组件继续采集数据的可能性。",
+  "privacy.choice": "是否卸载由你决定。该组件可能承担运营商注册或设备管理功能，停用后部分功能可能受影响。为某个用户卸载无法撤回此前可能上传的数据，也不能说明其他服务收集了什么。决定前先核对包名、备份重要资料并阅读风险说明。",
+  "setup.title": "1. 准备 ADB",
+  "setup.get": "准备一台 Windows 电脑和一根能传数据的 USB 线。从 <a href=\"https://developer.android.com/tools/releases/platform-tools\">Google 官方页面获取 Android SDK Platform-Tools<\/a>，解压 ZIP 文件。",
+  "setup.cmd": "打开解压出的 <code>platform-tools<\/code> 文件夹，确认里面有 <code>adb.exe<\/code>。在资源管理器地址栏输入 <code>cmd<\/code> 并回车，命令提示符就会在这个目录打开。",
+  "setup.unix": "macOS 或 Linux 用户可以用终端进入解压出的 <code>platform-tools<\/code> 文件夹。如果 PATH 中找不到 <code>adb<\/code>，用 <code>./adb<\/code> 代替。第 4 步可选择 macOS / Linux，以切换输出筛选命令。高级示例使用 Windows CMD。",
+  "done.1": "已准备好 ADB",
+  "usb.title": "2. 开启 USB 调试",
+  "usb.enable": "在设置的「关于手机」中连续点击系统版本号或构建号，开启开发者选项。菜单名称因机型而异。小米澎湃 OS 可查看「设置 → 我的设备 → 全部参数与信息」，然后在「设置 → 更多设置 → 开发者选项」中打开 USB 调试。",
+  "usb.approve": "只连接要检查的这一台手机。解锁屏幕，确认是自己的电脑，再点「允许 USB 调试」。小米实测使用普通 ADB 权限，Bootloader 保持锁定。",
+  "done.2": "已开启 USB 调试",
+  "connect.title": "3. 检查连接",
+  "connect.run": "在终端粘贴这条命令并回车。",
+  "command.devices": "只读 · 查看连接的设备",
+  "connect.sample": "输出示例",
+  "connect.result": "看到 <code>device<\/code> 表示连接正常。看到 <code>unauthorized<\/code> 时，先在手机上授权，再运行一次。列表为空时，检查数据线、USB 接口、调试设置和 Windows USB 驱动。公开截图前请遮住设备序列号。",
+  "done.3": "ADB 已显示 device",
+  "identify.title": "4. 核对包名和安装状态",
+  "identify.names": "多个应用可能都叫 SystemHelper。请核对输出中的完整包名。只有高通组件或其他相似名字时，到这里就可以停止。",
+  "platform": "电脑终端",
+  "command.find": "只读 · 查找包名和 APK 路径",
+  "identify.system": "继续卸载前，先确认目标出现在系统应用列表中。下文的卸载步骤适用于系统预装包。",
+  "command.system": "只读 · 确认目标是系统应用",
+  "command.who": "只读 · 查看当前 Android 用户",
+  "command.build": "只读 · 查看系统构建版本",
+  "command.status": "只读 · 查看应用版本和安装状态",
+  "identify.read": "确认当前用户是 <code>0<\/code>。如果在访客模式或第二空间，先切回主用户。记下 <code>User 0:<\/code> 一行的 <code>installed=<\/code> 和 <code>enabled=<\/code>。要使用高级方案，还需记录 <code>versionName=<\/code>。如果已显示 <code>installed=false<\/code>，无需重复卸载。缺少预期输出时，先核对包名和连接。",
+  "done.4": "已核对包名和系统构建",
+  "standard.title": "5. 尝试标准 ADB 命令",
+  "standard.before": "只有包名完全一致、当前用户为 <code>0<\/code> 且目标显示 <code>installed=true<\/code> 时，才考虑继续。先读<a href=\"#step8\">恢复步骤<\/a>。下面两条命令会修改手机状态。",
+  "command.disable": "修改手机 · 为 User 0 禁用",
+  "standard.disabled": "如果返回 <samp>new state: disabled-user<\/samp>，查一下是否为 <code>enabled=3<\/code>。禁用后仍可显示 <code>installed=true<\/code>。如果禁用已满足需要，可以到此为止。<samp>Cannot disable system packages.<\/samp> 或 <samp>SecurityException<\/samp> 表示系统拒绝请求。做其他操作前先回读状态。",
+  "standard.remove": "如果仍想为 User 0 卸载目标包，再执行下面的命令。<code>-k<\/code> 请求保留应用数据，重要资料仍请提前备份。",
+  "command.uninstall": "修改手机 · 为 User 0 卸载",
+  "standard.result": "看到 <samp>Success<\/samp> 后，进入<a href=\"#step7\">验证步骤<\/a>。如果看到 <samp>Failure<\/samp> 或 <samp>only root can delete system app for a particular user<\/samp>，再次查询包状态。若仍显示 <code>installed=true<\/code>，说明未卸载；之前成功的禁用可能仍然有效。",
+  "done.5": "已记录标准方法的结果",
+  "advanced.title": "6. 小米实测构建的高级方案",
+  "advanced.scope": "仅当 Xiaomi 17 Pro Max 运行 HyperOS <code>OS4.0.6.0.XPBCNXM<\/code>、目标应用版本为 <code>4.0.0-20260910<\/code>，且标准卸载被拒绝时，才考虑本节。任一条件不符，请停在标准检查。",
+  "advanced.upstream": "<a href=\"https://github.com/zd-Ethan/systemhelper\">上游实测<\/a>使用自己的临时工具，在普通 ADB shell（UID 2000）下调用 <code>IPackageManager.deletePackageAsUser<\/code>。系统原始 APK 保留。下方独立 Java 示例仅通过电脑端编译检查；如要复现实测操作，请以上游记录为准。",
+  "advanced.open": "Windows 示例：编译、检查并提交请求",
+  "advanced.confirm": "我已核对机型、完整构建、应用版本、目标包名和 User 0 状态。",
+  "advanced.prepare": "A. 准备 Java 和工作文件夹",
+  "advanced.jdk": "使用 JDK 17 或 21。两个工具都应输出版本号。若 CMD 提示找不到命令，先检查 JDK 安装与 PATH。",
+  "command.java": "电脑端 · 检查 Java 和 javac",
+  "command.folder": "电脑端 · 创建工作文件夹",
+  "advanced.source": "B. 保存示例源码",
+  "advanced.notepad": "用下面的命令在记事本中打开文件。如果询问是否创建，选择「是」。粘贴 Java 源码并按 <code>Ctrl + S<\/code> 保存。文件应命名为 <code>SystemHelperUserTool.java<\/code>，放在刚创建的 <code>systemhelper-tools<\/code> 文件夹里。",
+  "command.notepad": "电脑端 · 用记事本打开 Java 文件",
+  "advanced.preview": "查看 Java 源码",
+  "advanced.copySource": "复制源码",
+  "advanced.d8": "C. 获取并验证 D8",
+  "advanced.d8help": "Android 运行的是 DEX 字节码。用指定 Google R8 构建中的 D8 转换 Java 类文件。继续前应看到 D8 输出版本号。",
+  "command.r8": "电脑端 · 获取 R8 8.3.37",
+  "command.d8ver": "电脑端 · 检查 D8 版本",
+  "advanced.compile": "D. 编译临时工具",
+  "command.javac": "电脑端 · 编译 Java 源码",
+  "command.d8": "电脑端 · 生成 DEX 文件",
+  "advanced.buildcheck": "确认工作文件夹中出现 <code>classes.dex<\/code>。JDK 21 即使编译成功也可能提示源级别 8 已过时。若出现 <samp>error: file not found<\/samp>，先检查文件名和保存目录。",
+  "advanced.inspect": "E. 传输工具并检查接口",
+  "command.push": "修改手机 · 传输临时 DEX",
+  "command.chmod": "修改手机 · 将 DEX 设为只读",
+  "command.inspect": "只读 · 检查包管理接口",
+  "advanced.inspectResult": "只有示例输出 <samp>READ_ONLY_CHECK_OK<\/samp> 才继续。如果遇到 <samp>Permission denied<\/samp>、<samp>NoSuchMethodException<\/samp> 或 <samp>Unverified OS build<\/samp>，请停止并用第 7 步的清理命令移除临时文件。",
+  "advanced.submit": "F. 提交用户级卸载请求",
+  "advanced.stop": "只有上一步检查通过，且仍要为 User 0 卸载时，才执行这一条。设备、构建、包名或输出任一不符时，请停止。",
+  "command.remove": "修改手机 · 提交卸载请求",
+  "advanced.sent": "<samp>REQUEST_SENT_CHECK_PACKAGE_STATE<\/samp> 表示请求已提交。是否成功要看第 7 步查询的实际状态。如果请求报错，先回读状态，再清理临时文件。",
+  "done.6": "已确认适用的处理方式",
+  "verify.title": "7. 验证结果并重启复查",
+  "command.verify": "只读 · 查看 User 0 安装状态",
+  "verify.example": "实测输出，已去除设备标识",
+  "verify.result": "卸载后，确认 <code>User 0:<\/code> 一行显示 <code>installed=false<\/code>。如果只做了禁用，检查 <code>enabled=3<\/code>。命令显示成功或查不到进程，都不能代替状态确认。重启、解锁并重新连接手机后再查一次，同时检查移动数据、来电、拨号和短信。",
+  "verify.cleanup": "如果传输了临时 DEX，验证完毕或中途停止时请清理。清理成功时通常没有输出。结束后可关闭 USB 调试，系统升级或恢复出厂设置后再查一次包状态。",
+  "command.cleanup": "修改手机 · 移除临时 DEX 文件",
+  "done.7": "已在重启后复查状态",
+  "restore.title": "8. 按需恢复应用",
+  "restore.apk": "用户级卸载改变的是该包对指定用户的安装状态，原始系统 APK 仍保留。只要 APK 仍可用，就可以尝试为 User 0 重新登记。",
+  "command.restore": "修改手机 · 恢复 User 0 的安装登记",
+  "restore.verify": "恢复后确认 <code>installed=true<\/code>。上游两台设备均未实际执行恢复测试。如果先前禁用过应用，还要检查 <code>enabled=<\/code>。请按操作前记下的状态恢复。",
+  "restore.default": "如果原值是 <code>enabled=0<\/code>，恢复默认启用状态。",
+  "command.default-state": "修改手机 · 恢复默认启用状态",
+  "restore.enabled": "如果原值是 <code>enabled=1<\/code>，恢复为显式启用。原值不同或命令报错时，请保留输出，查对应构建的恢复方法。",
+  "command.enable": "修改手机 · 为 User 0 启用目标包",
+  "done.8": "已了解恢复步骤",
+  "case.title": "Xiaomi 17 Pro Max 实测记录",
+  "case.intro": "本项目实测记录对应一台手机和一个系统构建。成功卸载使用的是上游工具，结果不能推广到其他手机或后续系统更新。",
+  "case.columns": "项目",
+  "case.columns.value": "实测结果",
+  "case.device": "设备",
+  "case.device.value": "Xiaomi 17 Pro Max，16 GB RAM / 1 TB",
+  "case.os": "系统",
+  "case.os.value": "HyperOS <code>OS4.0.6.0.XPBCNXM<\/code>",
+  "case.package": "目标包名",
+  "case.package.value": "<code>com.mobiletools.systemhelper<\/code>",
+  "case.version": "应用版本",
+  "case.version.value": "<code>4.0.0-20260910<\/code>",
+  "case.root": "Root 与 Bootloader",
+  "case.root.value": "未使用 Root，未解锁 Bootloader。",
+  "case.disable": "标准禁用",
+  "case.disable.value": "<samp>Cannot disable system packages.<\/samp>",
+  "case.remove": "标准卸载",
+  "case.remove.value": "<samp>only root can delete system app for a particular user<\/samp>",
+  "case.method": "成功方法",
+  "case.method.value": "以 ADB shell（UID 2000）调用 <code>deletePackageAsUser<\/code>",
+  "case.reboot": "重启复查",
+  "case.reboot.value": "User 0 仍显示 <code>installed=false<\/code>。",
+  "case.basics": "基础功能",
+  "case.basics.value": "移动数据、电话、短信正常，高通组件仍为 <code>installed=true<\/code>。",
+  "faq.title": "常见问题",
+  "faq.adb": "Windows 为什么找不到 adb？",
+  "answer.adb": "在包含 <code>adb.exe<\/code> 的文件夹里打开命令提示符。如果打开的是 PowerShell，可在该目录用 <code>.\\adb.exe<\/code>，或切回 CMD。",
+  "faq.unauthorized": "unauthorized 是什么意思？",
+  "answer.unauthorized": "解锁手机，在 USB 调试提示中允许自己的电脑。没有弹窗时，可在开发者选项撤销 USB 调试授权，重新插线后再运行 <code>adb devices<\/code>。",
+  "faq.disable": "disable-user 被拒绝怎么办？",
+  "answer.disable": "先回读应用状态。核对包名、用户和连接无误后，如果仍有卸载需求，可以尝试标准用户级卸载。",
+  "faq.uninstall": "uninstall --user 0 也被拒绝怎么办？",
+  "answer.uninstall": "如果是连接错误，修复后再试。如果系统明确拒绝卸载，除非机型和构建与小米实测记录完全一致，否则停在标准检查。",
+  "faq.apk": "为什么 installed=false 后 APK 还在？",
+  "answer.apk": "该字段描述 User 0 的安装状态。原始 APK 仍保留在系统分区，系统允许时可以用 <code>install-existing<\/code> 恢复安装登记。",
+  "faq.calls": "会影响电话、短信或移动数据吗？",
+  "answer.calls": "这台小米设备在实测中三项功能均正常。不同机型和构建的依赖可能不同，请在修改后用自己的手机复查。",
+  "faq.root": "需要 Root 吗？",
+  "answer.root": "只读检查和小米实测卸载均使用普通 ADB shell。厂商仍可能限制这一身份可以执行的修改。",
+  "faq.other": "其他品牌可以参考吗？",
+  "answer.other": "先做只读检查。只有找到完全一致的目标包，才考虑标准 ADB 操作。高级方案的结果限于实测记录中的机型和构建。",
+  "faq.example": "网页里的 Java 示例是上游工具吗？",
+  "answer.example": "它是独立实现，固定包名、User 0 和构建，默认只检查接口，并已通过电脑端编译。真机实测使用的是上游实现。",
+  "faq.browser": "网页会自动运行命令吗？",
+  "answer.browser": "命令由你自己在终端执行。网页负责显示或复制文本，并在浏览器中保存语言、主题和步骤勾选。",
+  "risks.title": "风险与适用范围",
+  "risks.device": "本指南用于技术研究和个人设备管理。请只修改你有权管理的设备，先备份重要数据、记录原状态，并考虑手机是否依赖该组件。系统更新可能改变卸载和恢复行为。",
+  "risks.privacy": "卸载验证只说明某个包对指定 Android 用户的安装状态，不能说明整台手机收集或发送了什么。",
+  "sources.title": "来源与许可",
+  "source.upstream": "zd-Ethan — 原始卸载方案与实测记录",
+  "source.hyperos": "acxun — HyperOS 终端管理组件原始分析",
+  "source.realme": "DreamingCats — realme 样本原始分析",
+  "source.bufanche": "不翻车 — SystemHelper 数据上报相关报道",
+  "source.adb": "Android Debug Bridge 官方文档",
+  "source.platform": "Android SDK Platform-Tools",
+  "source.r8": "Google R8/D8",
+  "sources.license": "教程和独立示例由 HAPPY Games 整理，采用 <a href=\"./LICENSE\">MIT 许可<\/a>。上游代码和第三方工具各自遵循其发布条款。",
+  "sources.contribute": "如要提交其他机型记录，请查看<a href=\"https://github.com/happy-games/SystemHelper-Guide/blob/main/CONTRIBUTING.zh-CN.md\">贡献说明<\/a>。公开日志前，请移除序列号、设备和 SIM 标识、手机号及个人文件路径。",
+  "footer.repo": "HAPPY Games · GitHub 仓库",
+  "footer.top": "返回顶部"
+}
+</script>
+
 <script>
-(function(){
-'use strict';
-const $=(s)=>document.querySelector(s), $$=(s)=>Array.from(document.querySelectorAll(s));
-const TARGET='com.mobiletools.systemhelper';
-const workspace='"%USERPROFILE%\\Desktop\\systemhelper-tools"';
-const root='%USERPROFILE%\\Desktop\\systemhelper-tools\\';
-const command={
- devices:{title:'查询设备连接（只读）',win:'adb devices',unix:'adb devices'},
- find:{title:'查询包名和 APK 路径（只读）',win:'adb shell pm list packages -f | findstr /i systemhelper',unix:'adb shell pm list packages -f | grep -i systemhelper'},
- who:{title:'确认当前用户为 0（只读）',win:'adb shell am get-current-user',unix:'adb shell am get-current-user'},
- build:{title:'查询系统版本（只读）',win:'adb shell getprop ro.build.version.incremental',unix:'adb shell getprop ro.build.version.incremental'},
- status:{title:'查看应用版本和用户安装状态（只读）',win:'adb shell dumpsys package '+TARGET+' | findstr /c:"versionName=" /c:"User 0:"',unix:'adb shell dumpsys package '+TARGET+" | grep -E 'versionName=|User 0:'"},
- uninstall:{title:'会修改手机 · 标准用户级卸载',win:'adb shell pm uninstall -k --user 0 '+TARGET,unix:'adb shell pm uninstall -k --user 0 '+TARGET},
- verify:{title:'验证安装状态（只读）',win:'adb shell dumpsys package '+TARGET+' | findstr /c:"User 0:"',unix:'adb shell dumpsys package '+TARGET+" | grep 'User 0:'"},
- cleanup:{title:'清理本教程的临时 DEX 文件',win:'adb shell rm -f /data/local/tmp/systemhelper-guide.dex',unix:'adb shell rm -f /data/local/tmp/systemhelper-guide.dex'},
- restore:{title:'需要恢复时才执行 · 用户级重新安装',win:'adb shell cmd package install-existing --user 0 '+TARGET,unix:'adb shell cmd package install-existing --user 0 '+TARGET},
- java:{title:'检查 Java / Javac 版本',win:'java -version && javac -version'},
- folder:{title:'在桌面创建工作文件夹',win:'mkdir '+workspace},
- notepad:{title:'记事本创建或打开 Java 源文件',win:'notepad "'+root+'SystemHelperUserTool.java"'},
- r8:{title:'下载官方 R8 8.3.37 构建工具',win:'curl.exe -fL "https://storage.googleapis.com/r8-releases/raw/8.3.37/r8.jar" -o "'+root+'r8-8.3.37.jar"'},
- d8ver:{title:'检查 D8 版本',win:'java -cp "'+root+'r8-8.3.37.jar" com.android.tools.r8.D8 --version'},
- javac:{title:'编译 Java 源码（只修改电脑文件）',win:'javac --release 8 -encoding UTF-8 -d '+workspace+' "'+root+'SystemHelperUserTool.java"'},
- d8:{title:'生成 Android DEX 文件（只修改电脑文件）',win:'java -cp "'+root+'r8-8.3.37.jar" com.android.tools.r8.D8 --min-api 26 --output '+workspace+' "'+root+'SystemHelperUserTool.class"'},
- push:{title:'上传临时 DEX 文件到手机',win:'adb push "'+root+'classes.dex" /data/local/tmp/systemhelper-guide.dex'},
- chmod:{title:'将临时 DEX 设置为只读',win:'adb shell chmod 444 /data/local/tmp/systemhelper-guide.dex'},
- inspect:{title:'调用前检查：不会卸载',win:'adb shell "CLASSPATH=/data/local/tmp/systemhelper-guide.dex app_process /system/bin SystemHelperUserTool inspect"'},
- remove:{title:'高风险：真正提交用户级卸载请求',win:'adb shell "CLASSPATH=/data/local/tmp/systemhelper-guide.dex app_process /system/bin SystemHelperUserTool confirm-remove"'}
-};
-let device='xiaomi',platform='win',agree=false;
-const storage={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}},remove(k){try{localStorage.removeItem(k)}catch{}}};
-const theme=storage.get('sht2-theme');if(theme==='dark')document.documentElement.dataset.theme='dark';
-function updateTheme(){$('#themeBtn').textContent=document.documentElement.dataset.theme==='dark'?'浅色模式':'深色模式'}updateTheme();
-$('#themeBtn').addEventListener('click',()=>{let next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;storage.set('sht2-theme',next);updateTheme()});
-let toastTimer;function toast(message){let t=$('#toast');t.textContent=message;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2300)}
-async function copyText(value){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(value);toast('已复制到剪贴板');return}}catch(e){}let t=document.createElement('textarea');t.value=value;t.style.cssText='position:fixed;left:-200vw;top:0';document.body.appendChild(t);t.focus();t.select();try{if(document.execCommand('copy'))toast('已复制到剪贴板');else toast('无法自动复制，请手动选择文字')}catch(e){toast('无法自动复制，请手动选择文字')}t.remove()}
-const source=$('#sourceCode').textContent.trim();$('#sourcePreview').textContent=source;
-$('#copySource').addEventListener('click',()=>copyText(source));
-$('#downloadSource').addEventListener('click',()=>{let blob=new Blob([source+'\n'],{type:'text/plain;charset=utf-8'});let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='SystemHelperUserTool.java';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('源码文件已下载')});
-function render(){for(let holder of $$('[data-cmd]')){let id=holder.dataset.cmd,def=command[id];if(!def)continue;let value=(platform==='win'||!def.unix)?def.win:def.unix;holder.innerHTML='';let bar=document.createElement('div');bar.className='cmdbar';let l=document.createElement('span');l.textContent=def.title;let b=document.createElement('button');b.type='button';b.className='copy';b.textContent='复制命令';const advanced=holder.closest('#advancedCommands');b.disabled=!!advanced&&!agree;b.addEventListener('click',()=>copyText(value));bar.append(l,b);let pre=document.createElement('pre'),code=document.createElement('code');code.textContent=value;pre.append(code);holder.append(bar,pre)}}
-function renderDevice(){ $$('.choose [data-device]').forEach(b=>{let selected=b.dataset.device===device;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected))});let x=device==='xiaomi';$('#xiaomiAdvanced').classList.toggle('visible',x);$('#otherAdvice').classList.toggle('hidden',x);$('#deviceResult').textContent=x?'当前路线：小米 17 Pro Max 实测版。高级步骤仅在系统构建版本完全一致时才可考虑。':'当前路线：其他 Android 的通用检查。标准卸载被系统拒绝时请停止，不直接使用隐藏接口方法。';agree=false;$('#advancedAgree').checked=false;updateAdvanced();}
-$$('.choose [data-device]').forEach(b=>b.addEventListener('click',()=>{device=b.dataset.device;renderDevice();render()}));
-$$('[data-platform]').forEach(b=>b.addEventListener('click',()=>{platform=b.dataset.platform;$$('[data-platform]').forEach(c=>{c.classList.toggle('active',c===b);c.setAttribute('aria-selected',String(c===b))});render();if(platform==='unix')toast('高级操作示例仅提供 Windows CMD 命令')}));
-function updateAdvanced(){agree=$('#advancedAgree').checked && device==='xiaomi';$('#advancedCommands').classList.toggle('enabled',agree);render()}
-$('#advancedAgree').addEventListener('change',updateAdvanced);
-const key='sht2-progress';let progress={};try{progress=JSON.parse(storage.get(key)||'{}')}catch(e){};function progressUpdate(){let count=$$('[data-done]').filter(c=>c.checked).length;$('#progressText').textContent=count+' / 8';$('#progressFill').style.width=(count/8*100)+'%'}
-$$('[data-done]').forEach(c=>{c.checked=!!progress[c.dataset.done];c.addEventListener('change',()=>{progress[c.dataset.done]=c.checked;storage.set(key,JSON.stringify(progress));progressUpdate()})});progressUpdate();$('#resetProgress').addEventListener('click',()=>{progress={};storage.remove(key);$$('[data-done]').forEach(c=>c.checked=false);progressUpdate();toast('本机进度已清空')});
-$('#jumpTo').addEventListener('change',e=>{if(e.target.value)document.querySelector(e.target.value)?.scrollIntoView({behavior:'smooth'});e.target.value=''});
-const links=$$('.sidenav a');function onScroll(){let current=$$('.main section[id]').filter(s=>s.getBoundingClientRect().top<160).pop();if(current){links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current.id))}}window.addEventListener('scroll',onScroll,{passive:true});
-renderDevice();render();onScroll();
-})();
+  const root = document.documentElement;
+  const english = JSON.parse(document.querySelector('#english-ui').textContent);
+  const chinese = JSON.parse(document.querySelector('#chinese').textContent);
+  const localized = [...document.querySelectorAll('[data-i18n]')];
+  for (const element of localized) english[element.dataset.i18n] = element.innerHTML;
+
+  const themeButton = document.querySelector('#theme-toggle');
+  const themePreference = matchMedia('(prefers-color-scheme: dark)');
+  const languageButtons = [...document.querySelectorAll('[data-language]')];
+  const meta = document.querySelector('meta[name="description"]');
+  const copyStatus = document.querySelector('#copy-status');
+  const progressText = document.querySelector('#progress-text');
+  const checkpoints = [...document.querySelectorAll('[data-done]')];
+  const confirmation = document.querySelector('#advanced-confirm');
+  const copyButtons = [];
+  const platform = document.querySelector('#platform');
+  let messages = english;
+  let progress = {};
+
+  function remember(key, value) {
+    try { localStorage.setItem(key, value); } catch {}
+  }
+
+  function recall(key) {
+    try { return localStorage.getItem(key); } catch { return null; }
+  }
+
+  function isDark() {
+    return root.dataset.theme ? root.dataset.theme === 'dark' : themePreference.matches;
+  }
+
+  function updateThemeLabel() {
+    themeButton.textContent = messages[isDark() ? 'themeLight' : 'themeDark'];
+  }
+
+  function updateProgress() {
+    const count = checkpoints.filter(box => box.checked).length;
+    progressText.textContent = messages.progress.replace('{count}', count);
+  }
+
+  function updateCopyLabels() {
+    for (const {button, caption} of copyButtons) {
+      button.textContent = messages.copyCommand;
+      button.setAttribute('aria-label', messages.copyCommand + ' — ' + caption.textContent);
+    }
+    const remove = document.querySelector('[data-command="remove"] button');
+    remove.disabled = !confirmation.checked;
+    remove.title = remove.disabled ? messages.copyLocked : '';
+  }
+
+  function readingAnchor() {
+    if (window.scrollY < 24) return null;
+    const header = document.querySelector('header');
+    const start = header.getBoundingClientRect().bottom + 12;
+    const candidates = document.querySelectorAll('article :is(h1, h2, h3, p, summary, figure, tr, li, .checkpoint)');
+    for (const element of candidates) {
+      const rect = element.getBoundingClientRect();
+      if (rect.height && rect.bottom > start && rect.top < innerHeight) {
+        return {element, offset: Math.max(-32, rect.top - start), header};
+      }
+    }
+    return null;
+  }
+
+  function setLanguage(language, preservePosition = false) {
+    const anchor = preservePosition ? readingAnchor() : null;
+    root.lang = language;
+    messages = language === 'zh-CN' ? chinese : english;
+    for (const element of localized) element.innerHTML = messages[element.dataset.i18n];
+    for (const element of document.querySelectorAll('[data-label]')) {
+      element.setAttribute('aria-label', messages[element.dataset.label]);
+    }
+    for (const button of languageButtons) {
+      button.setAttribute('aria-pressed', String(button.dataset.language === language));
+    }
+    document.title = messages.pageTitle;
+    meta.content = messages.description;
+    copyStatus.textContent = '';
+    updateThemeLabel();
+    updateProgress();
+    updateCopyLabels();
+    if (anchor) {
+      const expectedTop = anchor.header.getBoundingClientRect().bottom + 12 + anchor.offset;
+      window.scrollBy(0, anchor.element.getBoundingClientRect().top - expectedTop);
+    }
+  }
+
+  themeButton.addEventListener('click', () => {
+    root.dataset.theme = isDark() ? 'light' : 'dark';
+    remember('sht2-theme', root.dataset.theme);
+    updateThemeLabel();
+  });
+  themePreference.addEventListener('change', updateThemeLabel);
+  themeButton.hidden = false;
+
+  for (const button of languageButtons) {
+    button.addEventListener('click', () => {
+      if (root.lang === button.dataset.language) return;
+      remember('systemhelper-language', button.dataset.language);
+      setLanguage(button.dataset.language, true);
+    });
+  }
+  document.querySelector('#language').hidden = false;
+
+  const tocToggle = document.querySelector('#toc-toggle');
+  tocToggle.hidden = false;
+  tocToggle.addEventListener('click', () => {
+    tocToggle.setAttribute('aria-expanded', String(tocToggle.getAttribute('aria-expanded') !== 'true'));
+  });
+
+  async function copyText(value) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+        return true;
+      }
+    } catch {}
+
+    const previousFocus = document.activeElement;
+    const field = document.createElement('textarea');
+    field.className = 'clipboard-buffer';
+    field.value = value;
+    field.readOnly = true;
+    document.body.append(field);
+    field.select();
+    try {
+      return document.execCommand('copy');
+    } catch {
+      return false;
+    } finally {
+      field.remove();
+      previousFocus?.focus({ preventScroll: true });
+    }
+  }
+
+  function wireCopy(button, value, feedback) {
+    let resetTimer;
+    button.addEventListener('click', async () => {
+      clearTimeout(resetTimer);
+      copyStatus.textContent = '';
+      const copied = await copyText(value());
+      const message = messages[copied ? 'copied' : 'copyFailed'];
+      button.textContent = message;
+      copyStatus.textContent = message;
+      resetTimer = setTimeout(() => { button.textContent = messages[feedback]; }, 2200);
+    });
+  }
+
+  for (const figure of document.querySelectorAll('.command')) {
+    const caption = figure.querySelector('figcaption span');
+    const code = figure.querySelector('code');
+    const button = document.createElement('button');
+    button.type = 'button';
+    caption.after(button);
+    copyButtons.push({button, caption});
+    wireCopy(button, () => code.textContent, 'copyCommand');
+  }
+  confirmation.addEventListener('change', updateCopyLabels);
+  document.querySelector('#confirm-label').hidden = false;
+
+  const variants = [...document.querySelectorAll('[data-unix]')].map(code => ({code, win: code.textContent}));
+  platform.addEventListener('change', () => {
+    const useUnix = platform.querySelector('[value="unix"]').checked;
+    for (const {code, win} of variants) code.textContent = useUnix ? code.dataset.unix : win;
+  });
+  platform.hidden = false;
+
+  const copySource = document.querySelector('#copy-source');
+  wireCopy(copySource, () => document.querySelector('.source-code code').textContent, 'advanced.copySource');
+  copySource.hidden = false;
+
+  const progressKey = 'sht2-progress';
+  try { progress = JSON.parse(recall(progressKey)) || {}; } catch {}
+  for (const box of checkpoints) {
+    box.checked = Boolean(progress[box.dataset.done]);
+    box.closest('label').hidden = false;
+    box.addEventListener('change', () => {
+      progress[box.dataset.done] = box.checked;
+      remember(progressKey, JSON.stringify(progress));
+      updateProgress();
+    });
+  }
+  document.querySelector('#progress').hidden = false;
+  document.querySelector('#reset-progress').addEventListener('click', () => {
+    progress = {};
+    for (const box of checkpoints) box.checked = false;
+    remember(progressKey, '{}');
+    updateProgress();
+  });
+
+  function markCurrentLink() {
+    for (const link of document.querySelectorAll('.toc a')) {
+      if (link.hash === location.hash) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    }
+  }
+  window.addEventListener('hashchange', markCurrentLink);
+  markCurrentLink();
+  setLanguage(recall('systemhelper-language') === 'zh-CN' ? 'zh-CN' : 'en');
 </script>
 </body>
 </html>
