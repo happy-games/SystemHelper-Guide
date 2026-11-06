@@ -178,7 +178,7 @@
 </li><li>
 <a data-i18n="nav.faq" href="#questions">FAQ</a>
 </li><li>
-<a data-i18n="nav.risks" href="#risks">Risks</a>
+<a data-i18n="nav.risks" href="#risks">Disclaimer and risks</a>
 </li><li>
 <a data-i18n="nav.sources" href="#sources">Sources and license</a>
 </li>
@@ -193,6 +193,7 @@
 <p data-i18n="purpose">This guide starts with the USB connection and explains what each command does. The page copies commands on request; you decide which ones to run on your computer.</p>
 <p data-i18n="scope">Start with the general checks. Whether Android lets you disable or remove the package depends on the phone and its system build. The advanced method has a recorded success on one specific Xiaomi build.</p>
 <p data-i18n="target" class="note"><strong>Check the full package name.</strong> The target is <code>com.mobiletools.systemhelper</code>. Leave <code>com.qualcomm.qti.services.systemhelper</code>, a separate Qualcomm system component, alone.</p>
+<p><a data-i18n="risks.link" href="#risks">Read the disclaimer before making changes.</a></p>
 </section>
 <section id="privacy">
 <h2 data-i18n="privacy.title">Why some users remove SystemHelper</h2>
@@ -524,8 +525,9 @@ public final class SystemHelperUserTool {
 </details>
 </section>
 <section id="risks">
-<h2 data-i18n="risks.title">Risks and scope</h2>
-<p data-i18n="risks.device">Use this guide for research and personal device management. Make changes only to a device you are authorized to manage. Back up important data, record the starting state, and consider whether the phone relies on the component. System updates can change both removal and recovery behavior.</p>
+<h2 data-i18n="risks.title">Disclaimer and risks</h2>
+<p data-i18n="risks.disclaimer">This guide is for technical research and personal device management. Use it only on a device you own or are authorized to manage. You decide whether to make changes and assume the risks of doing so. Compatibility, continued device functionality, and recovery depend on the device and system build.</p>
+<p data-i18n="risks.device">Back up important data, record the starting state, and check whether your phone relies on the component before making changes. System updates can change both removal and recovery behavior.</p>
 <p data-i18n="risks.privacy">Removal checks establish the install state of one package for one Android user. They do not establish what the phone as a whole collects or sends.</p>
 </section>
 <section id="sources">
@@ -589,7 +591,7 @@ public final class SystemHelperUserTool {
   "nav.verify": "验证与恢复",
   "nav.case": "实测记录",
   "nav.faq": "常见问题",
-  "nav.risks": "风险提醒",
+  "nav.risks": "免责声明与风险",
   "nav.sources": "来源与许可",
   "reset": "清空勾选",
   "title": "SystemHelper 操作指南",
@@ -742,8 +744,10 @@ public final class SystemHelperUserTool {
   "answer.example": "它是独立实现，固定包名、User 0 和构建，默认只检查接口，并已通过电脑端编译。真机实测使用的是上游实现。",
   "faq.browser": "网页会自动运行命令吗？",
   "answer.browser": "命令由你自己在终端执行。网页负责显示或复制文本，并在浏览器中保存语言、主题和步骤勾选。",
-  "risks.title": "风险与适用范围",
-  "risks.device": "本指南用于技术研究和个人设备管理。请只修改你有权管理的设备，先备份重要数据、记录原状态，并考虑手机是否依赖该组件。系统更新可能改变卸载和恢复行为。",
+  "risks.link": "修改前请阅读免责声明。",
+  "risks.title": "免责声明与风险",
+  "risks.disclaimer": "本指南仅供技术研究和个人设备管理参考。请仅在自己拥有或有权管理的设备上操作。是否修改由你自行决定，相关风险由你承担。方法能否适用、设备功能是否受影响，以及能否恢复，都取决于机型和系统构建。",
+  "risks.device": "修改前请备份重要数据、记录原状态，并确认手机是否依赖该组件。系统更新可能改变卸载和恢复行为。",
   "risks.privacy": "卸载验证只说明某个包对指定 Android 用户的安装状态，不能说明整台手机收集或发送了什么。",
   "sources.title": "来源与许可",
   "source.upstream": "zd-Ethan — 原始卸载方案与实测记录",

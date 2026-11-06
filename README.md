@@ -30,7 +30,9 @@ The read-only ADB checks can be used on other Android phones with USB debugging.
 
 The test used the upstream tool. The website’s separate Java example passed desktop compilation only.
 
-## Risks and recovery
+## Disclaimer, risks, and recovery
+
+This guide is for technical research and personal device management. Use it only on a device you own or are authorized to manage. You decide whether to make changes and assume the risks of doing so. Compatibility, continued device functionality, and recovery depend on the device and system build.
 
 Removal is optional. This component may support carrier registration or device management. Back up important data and record the original package state before changing it. User-level removal changes the install state for User 0 and leaves the original system APK in place. If that APK is still available, the guide shows how to try recovery with `install-existing` and verify the result. Recovery depends on the build and was not tested in the recorded case.
 
